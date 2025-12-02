@@ -4,12 +4,6 @@
 # Installs or updates mac-provisioning on a Mac.
 # ==================================================
 
-#!/usr/bin/env bash
-# ==================================================
-# setup.sh - minimal mac-provisioning
-# Detecta nueva instalación o actualización
-# ==================================================
-
 VERSION_FILE="$HOME/.mac_provisioning_version"
 VERSION_URL="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/VERSION"
 
@@ -20,13 +14,19 @@ if [ -z "$LATEST_VERSION" ]; then
 fi
 
 if [ ! -f "$VERSION_FILE" ]; then
-    echo "New installation"
+    echo "mac-provisioning is not installed. Proceeding with installation..."
     NEW_INSTALLATION=true
 else
     INSTALLED_VERSION=$(cat "$VERSION_FILE")
-    echo "Current version: $INSTALLED_VERSION"
-    NEW_INSTALLATION=false
+
+    if [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
+        echo "✅ mac-provisioning is already up to date. Current version: $INSTALLED_VERSION"
+        exit 0
+    else
+        echo "mac-provisioning $INSTALLED_VERSION installed. Updating to $LATEST_VERSION..."
+        NEW_INSTALLATION=false
+    fi
 fi
 
 echo "$LATEST_VERSION" > "$VERSION_FILE"
-echo "📄 Version saved: $LATEST_VERSION"
+echo "✅ mac-provisioning $LATEST_VERSION installed"
