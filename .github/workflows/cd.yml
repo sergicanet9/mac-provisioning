@@ -10,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check tag source branch
+        id: check_branch
+        run: |
+          BRANCH=$(git branch -r --contains $GITHUB_SHA | grep origin/main || true)
+          if [ -z "$BRANCH" ]; then
+            echo "Tag was not created from main. Skipping workflow."
+            exit 78
+          fi
+          
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -40,4 +49,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ github.token }}
-          branch: ${{ github.head_ref }}
+          branch: main
