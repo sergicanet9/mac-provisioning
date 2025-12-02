@@ -1,0 +1,17 @@
+# ==============================================================================
+# .gitconfig
+#
+# Created by mac-provisioning (https://github.com/sergicanet9/mac-provisioning)
+# ==============================================================================
+# ⚠️ DO NOT MODIFY THIS FILE MANUALLY.
+# ==============================================================================
+
+[user]
+	email = test@test.com #TODO variable
+	name = Test Test # TODO variable
+[ghq]
+	root = ~/Git
+[credential]
+	helper = osxkeychain
+[core]
+    excludefile = ~/.gitignore_global
