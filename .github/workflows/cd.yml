@@ -1,0 +1,30 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set version tag
+        id: vars
+        run: echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update VERSION file
+        run: |
+          echo "${{ steps.vars.outputs.tag }}" > VERSION
+          git add VERSION
+          git commit -m "Update VERSION to ${{ steps.vars.outputs.tag }}"
+          git push
