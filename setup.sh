@@ -7,7 +7,7 @@
 VERSION_FILE="$HOME/.mac_provisioning_version"
 VERSION_URL="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/VERSION"
 
-LATEST_VERSION=$(curl -sL "$VERSION_URL")
+LATEST_VERSION=$(curl -sL -H "Cache-Control: no-cache" "$VERSION_URL")
 if [ -z "$LATEST_VERSION" ]; then
     echo "Could not fetch VERSION from $VERSION_URL"
     exit 1
