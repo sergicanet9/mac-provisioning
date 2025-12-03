@@ -165,6 +165,7 @@ fi
 # TODO mac settings, sidebar, finder setups
 # TODO mac app store apps
 # TODO vscode login?
+# TODO backup only working for plists
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
