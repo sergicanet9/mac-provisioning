@@ -34,7 +34,18 @@ fi
 # TODO dotfiles
 
 # ===========================================
-# 2. Install or update Homebrew
+# 2. Install or update Oh My Zsh
+# ===========================================
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "Oh My Zsh not found. Installing..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+    echo "Oh My Zsh already installed. Updating..."
+    omz update
+fi
+
+# ===========================================
+# 3. Install or update Homebrew
 # ===========================================
 if ! command -v brew &> /dev/null; then
     echo "Homebrew not found. Installing..."
@@ -45,7 +56,7 @@ else
 fi
 
 # ===========================================
-# 3. Apply Brewfile for packages and casks
+# 4. Apply Brewfile for packages and casks
 # ===========================================
 BREWFILE_TMP="/tmp/Brewfile"
 
@@ -59,9 +70,9 @@ fi
 brew bundle install --file="$BREWFILE_TMP"
 
 # ===========================================
-# 4. Apply Brewfile for Go packages
+# 5. Apply Brewfile for Go packages
 # ===========================================
-BREWFILE_TMP_GO="/tmp/Brewfile"
+BREWFILE_TMP_GO="/tmp/Brewfile/go"
 
 curl -sL https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/go/Brewfile -o "$BREWFILE_TMP_GO"
 
@@ -73,7 +84,7 @@ fi
 brew bundle install --file="$BREWFILE_TMP_GO"
 
 # ===========================================
-# X. Set installed version
+# 6. Set installed version
 # ===========================================
 echo "$LATEST_VERSION" > "$VERSION_FILE"
 echo "✅ mac-provisioning $LATEST_VERSION installed"
