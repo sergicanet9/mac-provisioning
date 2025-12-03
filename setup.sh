@@ -79,7 +79,7 @@ echo "4. Install or update Homebrew"
 # ===========================================
 if ! command -v brew &> /dev/null; then
     echo "Homebrew not found. Installing..."
-    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" #TODO PREPEND NONINTERACTIVE=1?
 else
     echo "Homebrew already installed. Updating..."
     brew update
@@ -137,8 +137,13 @@ git config --global user.email "$GIT_USER_EMAIL"
 
 git config --global ghq.root "$HOME/Git"
 
-echo "Authenticate GitHub CLI in your browser to create an SSH key. The script will continue once login is complete:"
-gh auth login # TODO do not create another key if already logged
+if ! gh auth status >/dev/null 2>&1; then
+    echo "Authenticate GitHub in your browser using HTTPS. The script will continue once login is complete:"
+    gh auth login
+else
+    echo "GitHub already authenticated — skipping login."
+fi
+
 GITHUB_USER=$(gh api user --jq .login)
 echo "Authenticated as: $GITHUB_USER"
 
