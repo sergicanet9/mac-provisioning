@@ -84,6 +84,8 @@ else
     brew update
 fi
 
+# TODO backup/dump current brew and go if new_installation=false?
+
 # ===========================================
 # 5. Apply Brewfile for packages and casks
 # ===========================================
