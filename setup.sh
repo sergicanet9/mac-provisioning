@@ -69,7 +69,9 @@ fi
 
 brew bundle install --file="$BREWFILE_TMP"
 
-# TODO donwload all github repos
+# TODO donwload all github repos. PAT?
+# TODO mac settings and dock, finder setups
+# TODO vscode login?
 
 # ===========================================
 # 5. Apply Brewfile for Go packages
