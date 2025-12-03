@@ -62,7 +62,7 @@ else
 fi
 
 # ===========================================
-echo "2. Install Xcode Command Line Tools"
+echo "2. Install or update Xcode Command Line Tools"
 # ===========================================
 if ! xcode-select -p &>/dev/null; then
     echo "Xcode Command Line Tools not found. Installing..."
@@ -77,12 +77,13 @@ fi
 # ===========================================
 echo "3. Install or update Oh My Zsh"
 # ===========================================
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
+OMZ_DIR="$HOME/.oh-my-zsh"
+if [ ! -d "$OMZ_DIR" ]; then
     echo "Oh My Zsh not found. Installing..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     echo "Oh My Zsh already installed. Updating..."
-    omz update
+    sh "$OMZ_DIR/tools/upgrade.sh"
 fi
 
 # ===========================================
