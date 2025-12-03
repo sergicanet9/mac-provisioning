@@ -34,7 +34,7 @@ install_file() {
 echo "1. Check if mac-provisioning is installed"
 # ===========================================
 VERSION_FILE="$HOME/.mac_provisioning_version"
-VERSION_URL="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/VERSION"
+VERSION_URL="$FILES_BASE/VERSION"
 
 LATEST_VERSION=$(curl -sL -H "Cache-Control: no-cache" "$VERSION_URL")
 if [ -z "$LATEST_VERSION" ]; then
@@ -93,7 +93,7 @@ echo "5. Apply Brewfile for packages and casks"
 # ===========================================
 BREWFILE_TMP="/tmp/Brewfile"
 
-curl -sL https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/homebrew/Brewfile -o "$BREWFILE_TMP"
+curl -sL $FILES_BASE/homebrew/Brewfile -o "$BREWFILE_TMP"
 
 if [ ! -s "$BREWFILE_TMP" ]; then
     echo "Failed to download Brewfile"
@@ -115,7 +115,7 @@ echo "6. Apply Brewfile for Go packages"
 # ===========================================
 BREWFILE_TMP_GO="/tmp/Brewfile_go"
 
-curl -sL https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/go/Brewfile_go -o "$BREWFILE_TMP_GO"
+curl -sL $FILES_BASE/go/Brewfile -o "$BREWFILE_TMP_GO"
 
 if [ ! -s "$BREWFILE_TMP_GO" ]; then
     echo "Failed to download Brewfile"
@@ -159,8 +159,8 @@ done
 echo "8. Set up macOS"
 # ===========================================
 defaults write com.apple.menuextra.clock ShowSeconds -bool true
-install_file "$PLISTS_BASE" "macos/com.apple.dock.plist" "$HOME/Library/Preferences/com.apple.dock.plist"
-install_file "$PLISTS_BASE" "macos/com.apple.finder.plist" "$HOME/Library/Preferences/com.apple.finder.plist"
+install_file "macos/com.apple.dock.plist" "$HOME/Library/Preferences/com.apple.dock.plist"
+install_file "macos/com.apple.finder.plist" "$HOME/Library/Preferences/com.apple.finder.plist"
 
 # ===========================================
 echo "9. Set installed version"
