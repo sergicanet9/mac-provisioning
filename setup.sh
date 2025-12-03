@@ -58,9 +58,6 @@ install_dotfile() {
 install_dotfile ".zshrc"
 install_dotfile ".zshcustom"
 install_dotfile ".gitignore_global"
-install_dotfile ".gitconfig"
-
-echo "Dotfiles installed"
 
 # ===========================================
 # 3. Install or update Oh My Zsh
@@ -84,8 +81,6 @@ else
     brew update
 fi
 
-# TODO backup/dump current brew and go if new_installation=false?
-
 # ===========================================
 # 5. Apply Brewfile for packages and casks
 # ===========================================
@@ -98,28 +93,59 @@ if [ ! -s "$BREWFILE_TMP" ]; then
     exit 1
 fi
 
+if [ "$NEW_INSTALLATION" = false ]; then
+    echo "Backing up Brewfile for packages and casks..."
+    brew bundle dump --describe --force --no-vscode --file="/$HOME/.Brewfile_backup_$timestamp"
+fi
+
 brew bundle install --file="$BREWFILE_TMP"
 
-# TODO donwload all github repos. PAT?
 # TODO mac settings and dock, finder setups
 # TODO vscode login?
 
 # ===========================================
 # 6. Apply Brewfile for Go packages
 # ===========================================
-BREWFILE_TMP_GO="/tmp/Brewfile/go"
+BREWFILE_TMP_GO="/tmp/Brewfile_go"
 
-curl -sL https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/go/Brewfile -o "$BREWFILE_TMP_GO"
+curl -sL https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/go/Brewfile_go -o "$BREWFILE_TMP_GO"
 
 if [ ! -s "$BREWFILE_TMP_GO" ]; then
     echo "Failed to download Brewfile"
     exit 1
 fi
 
+if [ "$NEW_INSTALLATION" = false ]; then
+    echo "Backing up Brewfile for Go packages ..."
+    brew bundle dump --describe --force --go --file="/$HOME/.Brewfile_go_backup_$timestamp"
+fi
+
 brew bundle install --file="$BREWFILE_TMP_GO"
 
 # ===========================================
-# 7. Set installed version
+# 7. Configure git and clone repos
+# ===========================================
+read -rp "Enter your Git user name: " GIT_USER_NAME
+git config --global user.name "$GIT_USER_NAME"
+
+read -rp "Enter your Git user email: " GIT_USER_EMAIL
+git config --global user.email "$GIT_USER_EMAIL"
+
+GITIGNORE_GLOBAL="$HOME/.gitignore_global"
+git config --global core.excludesfile "$GITIGNORE_GLOBAL"
+
+echo "Authenticate GitHub CLI in your browser to create an SSH key. The script will continue once login is complete:"
+gh auth login
+GITHUB_USER=$(gh api user --jq .login)
+echo "Authenticated as: $GITHUB_USER"
+
+echo "Fetching all GitHub repos..."
+for repo in $(gh repo list "$GITHUB_USER" --limit 200 --json name,sshUrl -q '.[].sshUrl'); do
+    ghq get "$repo" || echo "Already cloned or failed: $repo"
+done
+
+# ===========================================
+# 8. Set installed version
 # ===========================================
 echo "$LATEST_VERSION" > "$VERSION_FILE"
 echo "✅ mac-provisioning $LATEST_VERSION installed"
