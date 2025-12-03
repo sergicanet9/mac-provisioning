@@ -16,7 +16,7 @@ declare new_installation
 
 backup_file() {
     local file="$1"
-    if [ -f "$file" ] && [ "$new_installation" = false ]; then
+    if [ -f "$file" ]; then
         echo "Backup existing $(basename "$file")"
         mv "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
     fi
@@ -109,10 +109,8 @@ if [ ! -s "$BREWFILE_TMP" ]; then
     exit 1
 fi
 
-if [ "$new_installation" = false ]; then
-    echo "Backing up Brewfile for packages and casks..."
-    brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/.Brewfile_backup_$TIMESTAMP"
-fi
+echo "Backing up Brewfile for packages and casks..."
+brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/.Brewfile_backup_$TIMESTAMP"
 
 brew bundle install --file="$BREWFILE_TMP"
 
@@ -128,10 +126,8 @@ if [ ! -s "$BREWFILE_TMP_GO" ]; then
     exit 1
 fi
 
-if [ "$new_installation" = false ]; then
-    echo "Backing up Brewfile for Go packages ..."
-    brew bundle dump --describe --force --go --file="$BACKUP_DIR/.Brewfile_go_backup_$TIMESTAMP"
-fi
+echo "Backing up Brewfile for Go packages ..."
+brew bundle dump --describe --force --go --file="$BACKUP_DIR/.Brewfile_go_backup_$TIMESTAMP"
 
 brew bundle install --file="$BREWFILE_TMP_GO"
 
@@ -171,6 +167,7 @@ if [ "$new_installation" = true ]; then
 fi
 
 # TODO mac settings, sidebar, finder setups
+# TODO mac app store apps
 # TODO vscode login?
 # ===========================================
 echo "8. Set up macOS"
