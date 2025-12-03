@@ -5,14 +5,12 @@
 # ==================================================
 
 # ===========================================
-# Variables & Helper functions
+# Constants & Helper functions
 # ===========================================
 FILES_BASE="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 INSTALL_DIR="$HOME/.mac-provisioning"
 BACKUP_DIR="$INSTALL_DIR/backup"
-
-declare new_installation
 
 backup_file() {
     local file="$1"
@@ -48,7 +46,6 @@ if [ ! -f "$VERSION_FILE" ]; then
     echo "mac-provisioning not found. Installing..."
     mkdir -p "$INSTALL_DIR"
     mkdir -p "$BACKUP_DIR"
-    new_installation=true
 else
     INSTALLED_VERSION=$(cat "$VERSION_FILE")
 
@@ -57,7 +54,6 @@ else
         exit 0
     else
         echo "mac-provisioning $INSTALLED_VERSION already installed. Updating to $LATEST_VERSION..."
-        new_installation=false
     fi
 fi
 
@@ -162,7 +158,7 @@ echo "7. Install dotfiles"
 # ===========================================
 install_file "dotfiles/.zshrc" "$HOME/.zshrc"
 
-if [ "$new_installation" = true ]; then
+if [ ! -f "$HOME/.zshcustom" ]; then
     install_file "dotfiles/.zshcustom" "$HOME/.zshcustom"
 fi
 
