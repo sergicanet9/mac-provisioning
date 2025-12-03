@@ -9,7 +9,7 @@
 # ===========================================
 FILES_BASE="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-BACKUP_DIR="$HOME/.mac_provisioning/backup"
+BACKUP_DIR="$HOME/.mac-provisioning/backup"
 
 declare new_installation
 
