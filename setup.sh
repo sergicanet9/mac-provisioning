@@ -83,7 +83,7 @@ if [ ! -d "$OMZ_DIR" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     echo "Oh My Zsh already installed. Updating..."
-    bash -ic "$OMZ_DIR/tools/upgrade.sh"
+    bash -c "$OMZ_DIR/tools/upgrade.sh"
 fi
 
 # ===========================================
