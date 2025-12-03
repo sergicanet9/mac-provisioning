@@ -69,6 +69,8 @@ fi
 
 brew bundle install --file="$BREWFILE_TMP"
 
+# TODO donwload all github repos
+
 # ===========================================
 # 5. Apply Brewfile for Go packages
 # ===========================================
