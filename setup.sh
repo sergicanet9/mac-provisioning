@@ -31,10 +31,39 @@ else
     fi
 fi
 
-# TODO dotfiles
+# ===========================================
+# 2. Install dotfiles
+# ===========================================
+timestamp=$(date +"%Y%m%d_%H%M%S")
+FILES_BASE="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main/dotfiles"
+
+backup_file() {
+    local file="$1"
+    if [ -f "$file" ] && [ "$NEW_INSTALLATION" = false ]; then
+        echo "Backup existing $(basename "$file")"
+        mv "$file" "${file}.backup_$timestamp"
+    fi
+}
+
+install_dotfile() {
+    local filename="$1"
+    local target="$HOME/$filename"
+
+    backup_file "$target"
+
+    echo "Installing $filename"
+    curl -fsSL "$FILES_BASE/$filename" -o "$target"
+}
+
+install_dotfile ".zshrc"
+install_dotfile ".zshcustom"
+install_dotfile ".gitignore_global"
+install_dotfile ".gitconfig"
+
+echo "Dotfiles installed"
 
 # ===========================================
-# 2. Install or update Oh My Zsh
+# 3. Install or update Oh My Zsh
 # ===========================================
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "Oh My Zsh not found. Installing..."
@@ -45,7 +74,7 @@ else
 fi
 
 # ===========================================
-# 3. Install or update Homebrew
+# 4. Install or update Homebrew
 # ===========================================
 if ! command -v brew &> /dev/null; then
     echo "Homebrew not found. Installing..."
@@ -56,7 +85,7 @@ else
 fi
 
 # ===========================================
-# 4. Apply Brewfile for packages and casks
+# 5. Apply Brewfile for packages and casks
 # ===========================================
 BREWFILE_TMP="/tmp/Brewfile"
 
@@ -74,7 +103,7 @@ brew bundle install --file="$BREWFILE_TMP"
 # TODO vscode login?
 
 # ===========================================
-# 5. Apply Brewfile for Go packages
+# 6. Apply Brewfile for Go packages
 # ===========================================
 BREWFILE_TMP_GO="/tmp/Brewfile/go"
 
@@ -88,7 +117,7 @@ fi
 brew bundle install --file="$BREWFILE_TMP_GO"
 
 # ===========================================
-# 6. Set installed version
+# 7. Set installed version
 # ===========================================
 echo "$LATEST_VERSION" > "$VERSION_FILE"
 echo "✅ mac-provisioning $LATEST_VERSION installed"
