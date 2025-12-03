@@ -62,7 +62,6 @@ echo "2. Install dotfiles"
 # ===========================================
 install_file "dotfiles/.zshrc" "$HOME/.zshrc"
 install_file "dotfiles/.zshcustom" "$HOME/.zshcustom"
-install_file "dotfiles/.gitignore_global" "$HOME/.gitignore_global"
 
 # ===========================================
 echo "3. Install or update Oh My Zsh"
@@ -136,8 +135,7 @@ git config --global user.name "$GIT_USER_NAME"
 read -rp "Enter your Git user email: " GIT_USER_EMAIL
 git config --global user.email "$GIT_USER_EMAIL"
 
-GITIGNORE_GLOBAL="$HOME/.gitignore_global"
-git config --global core.excludesfile "$GITIGNORE_GLOBAL"
+git config --global ghq.root="$HOME/Git"
 
 echo "Authenticate GitHub CLI in your browser to create an SSH key. The script will continue once login is complete:"
 gh auth login
