@@ -159,8 +159,8 @@ done
 echo "8. Set up macOS"
 # ===========================================
 defaults write com.apple.menuextra.clock ShowSeconds -bool true
-install_file "$PLISTS_BASE" "com.apple.dock.plist" "$HOME/Library/Preferences/com.apple.dock.plist"
-install_file "$PLISTS_BASE" "com.apple.finder.plist" "$HOME/Library/Preferences/com.apple.finder.plist"
+install_file "$PLISTS_BASE" "macos/com.apple.dock.plist" "$HOME/Library/Preferences/com.apple.dock.plist"
+install_file "$PLISTS_BASE" "macos/com.apple.finder.plist" "$HOME/Library/Preferences/com.apple.finder.plist"
 
 # ===========================================
 echo "9. Set installed version"
