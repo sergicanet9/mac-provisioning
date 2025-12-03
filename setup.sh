@@ -9,7 +9,8 @@
 # ===========================================
 FILES_BASE="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-BACKUP_DIR="$HOME/.mac-provisioning/backup"
+INSTALL_DIR="$HOME/.mac-provisioning"
+BACKUP_DIR="$INSTALL_DIR/backup"
 
 declare new_installation
 
@@ -34,7 +35,7 @@ install_file() {
 # ===========================================
 echo "1. Check mac-provisioning installation"
 # ===========================================
-VERSION_FILE="$HOME/.mac-provisioning/version"
+VERSION_FILE="$INSTALL_DIR/version"
 VERSION_URL="$FILES_BASE/VERSION"
 
 LATEST_VERSION=$(curl -sL -H "Cache-Control: no-cache" "$VERSION_URL")
@@ -45,6 +46,7 @@ fi
 
 if [ ! -f "$VERSION_FILE" ]; then
     echo "mac-provisioning not found. Installing..."
+    mkdir -p "$INSTALL_DIR"
     mkdir -p "$BACKUP_DIR"
     new_installation=true
 else
