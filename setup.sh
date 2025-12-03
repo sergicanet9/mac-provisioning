@@ -26,7 +26,7 @@ else
         echo "✅ mac-provisioning is already up to date. Current version: $INSTALLED_VERSION"
         exit 0
     else
-        echo "mac-provisioning $INSTALLED_VERSION installed. Updating to $LATEST_VERSION..."
+        echo "mac-provisioning $INSTALLED_VERSION already installed. Updating to $LATEST_VERSION..."
         NEW_INSTALLATION=false
     fi
 fi
