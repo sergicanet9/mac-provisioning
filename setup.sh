@@ -138,12 +138,12 @@ git config --global user.email "$GIT_USER_EMAIL"
 git config --global ghq.root="$HOME/Git"
 
 echo "Authenticate GitHub CLI in your browser to create an SSH key. The script will continue once login is complete:"
-gh auth login
+gh auth login # TODO do not create another key if already logged
 GITHUB_USER=$(gh api user --jq .login)
 echo "Authenticated as: $GITHUB_USER"
 
 echo "Fetching all GitHub repos..."
-for repo in $(gh repo list "$GITHUB_USER" --limit 200 --json name,sshUrl -q '.[].sshUrl'); do
+for repo in $(gh repo list "$GITHUB_USER" --limit 200 --json name,url -q '.[].url'); do
     ghq get "$repo" || echo "Already cloned or failed: $repo"
 done
 
