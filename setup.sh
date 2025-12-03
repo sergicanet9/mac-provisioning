@@ -45,6 +45,7 @@ fi
 
 if [ ! -f "$VERSION_FILE" ]; then
     echo "mac-provisioning not found. Installing..."
+    mkdir -p "$(dirname "$VERSION_FILE")"
     new_installation=true
 else
     INSTALLED_VERSION=$(cat "$VERSION_FILE")
