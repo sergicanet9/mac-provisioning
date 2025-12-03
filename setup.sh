@@ -135,7 +135,7 @@ git config --global user.name "$GIT_USER_NAME"
 read -rp "Enter your Git user email: " GIT_USER_EMAIL
 git config --global user.email "$GIT_USER_EMAIL"
 
-git config --global ghq.root="$HOME/Git"
+git config --global ghq.root "$HOME/Git"
 
 echo "Authenticate GitHub CLI in your browser to create an SSH key. The script will continue once login is complete:"
 gh auth login # TODO do not create another key if already logged
