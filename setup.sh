@@ -61,7 +61,7 @@ fi
 echo "2. Install dotfiles"
 # ===========================================
 install_file "dotfiles/.zshrc" "$HOME/.zshrc"
-install_file "dotfiles/.zshcustom" "$HOME/.zshcustom"
+install_file "dotfiles/.zshcustom" "$HOME/.zshcustom" # TODO do not override existing customizations
 
 # ===========================================
 echo "3. Install or update Oh My Zsh"
