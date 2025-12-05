@@ -16,7 +16,7 @@ backup_file() {
     local file="$1"
     if [ -f "$file" ]; then
         echo "Backup existing $(basename "$file")"
-        cp "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
+        sudo cp "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
     fi
 }
 
