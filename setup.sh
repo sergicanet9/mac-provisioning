@@ -211,7 +211,7 @@ add_app "/Applications/Visual Studio Code.app"
 
 killall Dock
 
-FAVORITES_FILE="$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
+FAVORITES_FILE="$HOME/Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
 install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$FAVORITES_FILE"
 killall Finder
 
