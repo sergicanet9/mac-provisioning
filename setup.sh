@@ -5,7 +5,7 @@
 # ==================================================
 
 # ===========================================
-# Constants & Helper functions
+# Constants & Functions
 # ===========================================
 FILES_BASE="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
@@ -36,7 +36,7 @@ echo "1. Check mac-provisioning installation"
 VERSION_FILE="$INSTALL_DIR/version"
 VERSION_URL="$FILES_BASE/VERSION"
 
-LATEST_VERSION=$(curl -sL -H "Cache-Control: no-cache" "$VERSION_URL")
+LATEST_VERSION=$(curl -fsSL -H "Cache-Control: no-cache" "$VERSION_URL")
 if [ -z "$LATEST_VERSION" ]; then
     echo "Could not fetch VERSION from $VERSION_URL"
     exit 1
@@ -98,7 +98,7 @@ fi
 # # ===========================================
 # BREWFILE_TMP="/tmp/Brewfile"
 
-# curl -sL $FILES_BASE/homebrew/Brewfile -o "$BREWFILE_TMP"
+# curl -fsSL $FILES_BASE/homebrew/Brewfile -o "$BREWFILE_TMP"
 
 # if [ ! -s "$BREWFILE_TMP" ]; then
 #     echo "Failed to download Brewfile"
@@ -115,7 +115,7 @@ fi
 # # ===========================================
 # BREWFILE_TMP_GO="/tmp/Brewfile_go"
 
-# curl -sL $FILES_BASE/go/Brewfile -o "$BREWFILE_TMP_GO"
+# curl -fsSL $FILES_BASE/go/Brewfile -o "$BREWFILE_TMP_GO"
 
 # if [ ! -s "$BREWFILE_TMP_GO" ]; then
 #     echo "Failed to download Brewfile"
@@ -169,95 +169,15 @@ fi
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
+echo "Show seconds in menu bar clock"
 defaults write com.apple.menuextra.clock ShowSeconds -bool true
-# install_file "macos/com.apple.dock.plist" "$HOME/Library/Preferences/com.apple.dock.plist"
-# install_file "macos/com.apple.finder.plist" "$HOME/Library/Preferences/com.apple.finder.plist"
-# killall Dock
-# killall Finder
 
-defaults write com.apple.dock persistent-apps -array
-defaults write com.apple.dock show-recents -bool false
+echo "Configure Dock"
+bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)"
 
-add_app() {
-    local APP_PATH="$1"
-
-    defaults write com.apple.dock persistent-apps -array-add \
-    "<dict>
-        <key>tile-data</key>
-        <dict>
-            <key>file-data</key>
-            <dict>
-                <key>_CFURLString</key>
-                <string>$APP_PATH</string>
-                <key>_CFURLStringType</key>
-                <integer>0</integer>
-            </dict>
-        </dict>
-        <key>tile-type</key>
-        <string>file-tile</string>
-    </dict>"
-}
-
-echo "Configuring Dock..."
-add_app "/System/Applications/Launchpad.app"
-add_app $(readlink -f /Applications/Safari.app)
-add_app "/System/Applications/Mail.app"
-add_app "/System/Applications/Calendar.app"
-add_app "/System/Applications/Notes.app"
-add_app "/System/Applications/App Store.app"
-add_app "/System/Applications/System Settings.app"
-add_app "/Applications/iTerm.app"
-add_app "/Applications/Visual Studio Code.app"
-
-killall Dock
-
-
-echo "🚀 Configurando Favoritos de la Barra Lateral copiando archivo .sfl4..."
-# --- VARIABLES DE CONFIGURACIÓN ---
-SFL_FILENAME="com.apple.LSSharedFileList.FavoriteItems.sfl4"
-SFL_URL="$FILES_BASE/macos/$SFL_FILENAME" # Usando la subcarpeta 'macos'
-
-# Rutas de trabajo
-TEMP_FILE="/tmp/$SFL_FILENAME"
-DEST_DIR="$HOME/Library/Application Support/com.apple.sharedfilelist"
-DEST_FILE="$DEST_DIR/$SFL_FILENAME"
-
-
-# --- COMANDOS CORREGIDOS ---
-
-# 1. Asegúrate de que la carpeta de destino exista
-echo "--> Creando carpeta de destino si no existe: $DEST_DIR"
-mkdir -p "$DEST_DIR"
-
-# 2. Descargar el archivo de configuración con CURL
-# -s: Modo silencioso
-# -L: Sigue redirecciones (útil con URLs de GitHub)
-# -o: Guarda la salida en un archivo
-echo "--> Descargando $SFL_FILENAME desde $SFL_URL"
-if ! curl -sL "$SFL_URL" -o "$TEMP_FILE"; then
-    echo "!!! ERROR: Falló la descarga del archivo .sfl4."
-    echo "!!! Deteniendo la configuración de la barra lateral."
-    # Aseguramos que si algo falla, no dejamos residuos en /tmp
-    rm -f "$TEMP_FILE"
-    exit 1
-fi
-
-# 3. Copia el archivo descargado usando sudo para forzar la escritura
-echo "--> Copiando el archivo .sfl4 descargado a $DEST_DIR (Usando sudo...)"
-sudo cp "$TEMP_FILE" "$DEST_FILE"
-
-# 4. Asegura los permisos correctos (propiedad del usuario)
-# El chown es CRUCIAL después de usar sudo para que Finder pueda leerlo.
-echo "--> Asegurando permisos (propiedad de $USER) después de sudo..."
-sudo chown $USER:staff "$DEST_FILE"
-
-# 5. Limpia el archivo temporal
-rm -f "$TEMP_FILE"
-
-# 6. Reinicia el Finder para que cargue la nueva configuración
-echo "--> Reiniciando Finder para aplicar los cambios..."
-killall Finder
-
+echo "Install Mac App Store safari extensions?? TODO"
+open "macappstore://itunes.apple.com/app/id1402042596"
+open "macappstore://itunes.apple.com/app/id1569813296"
 
 
 # ===========================================
