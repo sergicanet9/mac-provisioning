@@ -44,7 +44,7 @@ personal_apps=(
     "/System/Applications/Notes.app"
     "/System/Applications/App Store.app"
     "/System/Applications/System Settings.app"
-    "/Applications/iTerm.app"
+    "/System/Applications/Utilities/Terminal.app"
     "/Applications/Visual Studio Code.app"
 )
 
@@ -55,41 +55,34 @@ work_apps=(
     "/Applications/Microsoft Teams.app"
     "/Applications/Notion.app"
     "/System/Applications/System Settings.app"
-    "/Applications/iTerm.app"
+    "/System/Applications/Utilities/Terminal.app"
     "/Applications/Visual Studio Code.app"
 )
 
 # ===========================================
-# Menu
+# Apply dock
 # ===========================================
-while true; do
-    echo "Select Dock configuration:"
-    echo "1) Personal"
-    echo "2) Work"
-    echo "3) Skip Dock setup"
-    read -rp "Enter your choice: " DOCK_CHOICE
+PROFILE="$1"
+if [[ -z "$PROFILE" ]]; then
+    echo "No profile provided. Exiting."
+    exit 1
+fi
 
-    case "$DOCK_CHOICE" in
-        1)
-            echo "Setting up Personal Dock..."
-            defaults write com.apple.dock persistent-apps -array
-            defaults write com.apple.dock show-recents -bool false
-            add_apps_to_dock "${personal_apps[@]}"
-            break
-            ;;
-        2)
-            echo "Setting up Work Dock..."
-            defaults write com.apple.dock persistent-apps -array
-            defaults write com.apple.dock show-recents -bool false
-            add_apps_to_dock "${work_apps[@]}"
-            break
-            ;;
-        3)
-            echo "Skipping Dock setup..."
-            break
-            ;;
-        *)
-            echo "Invalid choice. Select 1, 2, or 3."
-            ;;
-    esac
-done
+case "$PROFILE" in
+    personal)
+        echo "Setting up personal dock..."
+        defaults write com.apple.dock persistent-apps -array
+        defaults write com.apple.dock show-recents -bool false
+        add_apps_to_dock "${personal_apps[@]}"
+        ;;
+    work)
+        echo "Setting up work dock..."
+        defaults write com.apple.dock persistent-apps -array
+        defaults write com.apple.dock show-recents -bool false
+        add_apps_to_dock "${work_apps[@]}"
+        ;;
+    *)
+        echo "Unknown profile: $PROFILE. Skipping Dock setup."
+        exit 1
+        ;;
+esac

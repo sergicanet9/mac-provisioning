@@ -5,12 +5,24 @@
 # ==================================================
 
 # ===========================================
-# Constants & Functions
+# Variables & Functions
 # ===========================================
 FILES_BASE="https://raw.githubusercontent.com/sergicanet9/mac-provisioning/main"
-TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+LATEST_VERSION=$(curl -fsSL -H "Cache-Control: no-cache" "$FILES_BASE/VERSION")
+if [ -z "$LATEST_VERSION" ]; then
+    echo "Could not fetch VERSION from $FILES_BASE/VERSION"
+    exit 1
+fi
+
 INSTALL_DIR="$HOME/.mac-provisioning"
 BACKUP_DIR="$INSTALL_DIR/backup"
+VERSION_FILE="$INSTALL_DIR/version"
+PROFILE_FILE=$INSTALL_DIR/profile
+
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
+PROFILES=("personal" "work")
+declare profile
 
 backup_file() {
     local file="$1"
@@ -31,152 +43,169 @@ install_file() {
 }
 
 # ===========================================
-echo "1. Check mac-provisioning installation"
+echo "1. Check mac-provisioning install"
 # ===========================================
-VERSION_FILE="$INSTALL_DIR/version"
-VERSION_URL="$FILES_BASE/VERSION"
-
-LATEST_VERSION=$(curl -fsSL -H "Cache-Control: no-cache" "$VERSION_URL")
-if [ -z "$LATEST_VERSION" ]; then
-    echo "Could not fetch VERSION from $VERSION_URL"
-    exit 1
-fi
-
-if [ ! -f "$VERSION_FILE" ]; then
-    echo "mac-provisioning not found. Installing..."
-    mkdir -p "$INSTALL_DIR"
-    mkdir -p "$BACKUP_DIR"
+new_install=false
+if [ ! -d "$INSTALL_DIR" ]; then
+    new_install=true
+    echo "mac-provisioning not found. Installing from scratch..."
 else
-    INSTALLED_VERSION=$(cat "$VERSION_FILE")
-
-    if [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
-        echo "mac-provisioning is already up to date. Current version: $INSTALLED_VERSION. Reinstalling..."
+    if [ ! -f "$VERSION_FILE" ] || [ ! -f "$PROFILE_FILE" ] || [ ! -d "$BACKUP_DIR" ]; then
+        rm -rf "$INSTALL_DIR"
+        new_install=true
+        echo "Previous mac-provisioning installation is incomplete or corrupted. Reinstalling from scratch..."
     else
-        echo "mac-provisioning $INSTALLED_VERSION already installed. Updating to $LATEST_VERSION..."
+        profile=$(cat "$PROFILE_FILE")
+        if [[ ! " ${PROFILES[*]} " =~ " ${profile} " ]]; then
+            rm -rf "$INSTALL_DIR"
+            new_install=true
+            echo "Invalid profile detected in $PROFILE_FILE: $profile. Reinstalling from scratch..."
+        else
+            echo "mac-provisioning installation found with profile: $profile"
+
+            installed_version=$(cat "$VERSION_FILE")
+            if [ "$installed_version" = "$LATEST_VERSION" ]; then
+                echo "mac-provisioning is already up to date at version: $installed_version. Reinstalling..."
+            else
+                echo "mac-provisioning $installed_version has been found. Updating to version $LATEST_VERSION..."
+            fi
+        fi
     fi
 fi
 
-# ===========================================
-echo "2. Install or update Xcode Command Line Tools"
-# ===========================================
-if ! xcode-select -p &>/dev/null; then
-    echo "Xcode Command Line Tools not found. Installing..."
-    xcode-select --install
-else
-    echo "Xcode Command Line Tools found. Checking for updates..."
-    softwareupdate --list 2>/dev/null | grep "Command Line Tools" && \
-        echo "Update available. Installing..." && \
-        softwareupdate --install -a --verbose
+if [ "$new_install" = true ]; then
+    mkdir -p "$INSTALL_DIR" "$BACKUP_DIR"
+
+    echo "Select a profile for this Mac:"
+    select prof in personal work; do
+        if [[ -n "$prof" ]]; then
+            profile="$prof"
+            echo "Profile set to $profile"
+            echo "$profile" > "$PROFILE_FILE"
+            break
+        else
+            echo "Invalid choice. Choose 1 or 2."
+        fi
+    done
 fi
 
-# ===========================================
-echo "3. Install or update Oh My Zsh"
-# ===========================================
-OMZ_DIR="$HOME/.oh-my-zsh"
-if [ ! -d "$OMZ_DIR" ]; then
-    echo "Oh My Zsh not found. Installing..."
-    RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-else
-    echo "Oh My Zsh already installed. Updating..."
-    bash -c "$OMZ_DIR/tools/upgrade.sh"
-fi
+# # ===========================================
+# echo "2. Install or update Xcode Command Line Tools"
+# # ===========================================
+# if ! xcode-select -p &>/dev/null; then
+#     echo "Xcode Command Line Tools not found. Installing..."
+#     xcode-select --install
+# else
+#     echo "Xcode Command Line Tools found. Checking for updates..."
+#     softwareupdate --list 2>/dev/null | grep "Command Line Tools" && \
+#         echo "Update available. Installing..." && \
+#         softwareupdate --install -a --verbose
+# fi
 
-# ===========================================
-echo "4. Install or update Homebrew"
-# ===========================================
-if ! command -v brew &> /dev/null; then
-    echo "Homebrew not found. Installing..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-else
-    echo "Homebrew already installed. Updating..."
-    brew update
-fi
+# # ===========================================
+# echo "3. Install or update Oh My Zsh"
+# # ===========================================
+# OMZ_DIR="$HOME/.oh-my-zsh"
+# if [ ! -d "$OMZ_DIR" ]; then
+#     echo "Oh My Zsh not found. Installing..."
+#     RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# else
+#     echo "Oh My Zsh already installed. Updating..."
+#     bash -c "$OMZ_DIR/tools/upgrade.sh"
+# fi
 
-# ===========================================
-echo "5. Apply Brewfile for packages and casks"
-# ===========================================
-BREWFILE_TMP="/tmp/Brewfile"
+# # ===========================================
+# echo "4. Install or update Homebrew"
+# # ===========================================
+# if ! command -v brew &> /dev/null; then
+#     echo "Homebrew not found. Installing..."
+#     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# else
+#     echo "Homebrew already installed. Updating..."
+#     brew update
+# fi
 
-curl -fsSL $FILES_BASE/homebrew/Brewfile -o "$BREWFILE_TMP"
+# # ===========================================
+# echo "5. Apply Brewfile for packages and casks"
+# # ===========================================
+# BREWFILE_TMP="/tmp/Brewfile"
 
-if [ ! -s "$BREWFILE_TMP" ]; then
-    echo "Failed to download Brewfile"
-    exit 1
-fi
+# curl -fsSL $FILES_BASE/homebrew/Brewfile -o "$BREWFILE_TMP"
 
-echo "Backing up Brewfile for packages and casks..."
-brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/Backup_Brewfile_$TIMESTAMP"
+# if [ ! -s "$BREWFILE_TMP" ]; then
+#     echo "Failed to download Brewfile"
+#     exit 1
+# fi
 
-brew bundle install --file="$BREWFILE_TMP"
+# echo "Backing up Brewfile for packages and casks..."
+# brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/Backup_Brewfile_$TIMESTAMP"
 
-# ===========================================
-echo "6. Apply Brewfile for Go packages"
-# ===========================================
-BREWFILE_TMP_GO="/tmp/Brewfile_go"
+# brew bundle install --file="$BREWFILE_TMP"
 
-curl -fsSL $FILES_BASE/go/Brewfile -o "$BREWFILE_TMP_GO"
+# # ===========================================
+# echo "6. Apply Brewfile for Go packages"
+# # ===========================================
+# BREWFILE_TMP_GO="/tmp/Brewfile_go"
 
-if [ ! -s "$BREWFILE_TMP_GO" ]; then
-    echo "Failed to download Brewfile"
-    exit 1
-fi
+# curl -fsSL $FILES_BASE/go/Brewfile -o "$BREWFILE_TMP_GO"
 
-echo "Backing up Brewfile for Go packages ..."
-brew bundle dump --describe --force --go --file="$BACKUP_DIR/Backup_Brewfile_go_$TIMESTAMP"
+# if [ ! -s "$BREWFILE_TMP_GO" ]; then
+#     echo "Failed to download Brewfile"
+#     exit 1
+# fi
 
-brew bundle install --file="$BREWFILE_TMP_GO"
+# echo "Backing up Brewfile for Go packages ..."
+# brew bundle dump --describe --force --go --file="$BACKUP_DIR/Backup_Brewfile_go_$TIMESTAMP"
 
-# ===========================================
-echo "7. Configure git and clone repos"
-# ===========================================
-if ! git config --global --get user.name >/dev/null; then
-    read -rp "Enter your Git user name: " GIT_USER_NAME
-    git config --global user.name "$GIT_USER_NAME"
-else
-    GIT_USER_NAME=$(git config --global user.name)
-    echo "Git user name already set: $GIT_USER_NAME"
-fi
+# brew bundle install --file="$BREWFILE_TMP_GO"
 
-if ! git config --global --get user.email >/dev/null; then
-    read -rp "Enter your Git user email: " GIT_USER_EMAIL
-    git config --global user.email "$GIT_USER_EMAIL"
-else
-    GIT_USER_EMAIL=$(git config --global user.email)
-    echo "Git user email already set: $GIT_USER_EMAIL"
-fi
+# # ===========================================
+# echo "7. Configure git and clone repos"
+# # ===========================================
+# if ! git config --global --get user.name >/dev/null; then
+#     read -rp "Enter your Git user name: " GIT_USER_NAME
+#     git config --global user.name "$GIT_USER_NAME"
+# else
+#     GIT_USER_NAME=$(git config --global user.name)
+#     echo "Git user name already set: $GIT_USER_NAME"
+# fi
 
-git config --global ghq.root "$HOME/Git"
+# if ! git config --global --get user.email >/dev/null; then
+#     read -rp "Enter your Git user email: " GIT_USER_EMAIL
+#     git config --global user.email "$GIT_USER_EMAIL"
+# else
+#     GIT_USER_EMAIL=$(git config --global user.email)
+#     echo "Git user email already set: $GIT_USER_EMAIL"
+# fi
 
-if ! gh auth status >/dev/null 2>&1; then
-    echo "Authenticate GitHub in your browser using HTTPS. The script will continue once login is complete:"
-    gh auth login
-else
-    echo "GitHub already authenticated — skipping login."
-fi
+# git config --global ghq.root "$HOME/Git"
 
-GITHUB_USER=$(gh api user --jq .login)
-echo "Authenticated as: $GITHUB_USER"
+# if ! gh auth status >/dev/null 2>&1; then
+#     echo "Authenticate GitHub in your browser using HTTPS. The script will continue once login is complete:"
+#     gh auth login
+# else
+#     echo "GitHub already authenticated — skipping login."
+# fi
 
-echo "Fetching all GitHub repos..."
-for repo in $(gh repo list "$GITHUB_USER" --limit 200 --json name,url -q '.[].url'); do
-    ghq get "$repo" || echo "Already cloned or failed: $repo"
-done
+# GITHUB_USER=$(gh api user --jq .login)
+# echo "Authenticated as: $GITHUB_USER"
 
-# ===========================================
-echo "7. Install dotfiles"
-# ===========================================
-install_file "dotfiles/.zshrc" "$HOME/.zshrc"
+# echo "Fetching all GitHub repos..."
+# for repo in $(gh repo list "$GITHUB_USER" --limit 200 --json name,url -q '.[].url'); do
+#     ghq get "$repo" || echo "Already cloned or failed: $repo"
+# done
 
-if [ ! -f "$HOME/.zshcustom" ]; then
-    install_file "dotfiles/.zshcustom" "$HOME/.zshcustom"
-fi
+# # ===========================================
+# echo "7. Install dotfiles"
+# # ===========================================
+# install_file "dotfiles/.zshrc" "$HOME/.zshrc"
 
-# TODO vscode login?
-# TODO iterm background or switch to apple terminal
-# TODO separate profiles for work/personal
-# TODO do not use brewfiles for go packages?
-# TODO show bluetoth, volume, screen mirroring, bright extension in menu bar
-# TODO readme
+# if [ ! -f "$HOME/.zshcustom" ]; then
+#     install_file "dotfiles/.zshcustom" "$HOME/.zshcustom"
+# fi
+
+# # TODO separate profiles for work/personal
+# # TODO readme
 
 # ===========================================
 echo "8. Set up macOS"
@@ -208,4 +237,5 @@ bash -c "$(curl -fsSL $FILES_BASE/macos/extensions.sh)"
 echo "9. Set installed version"
 # ===========================================
 echo "$LATEST_VERSION" > "$VERSION_FILE"
+echo "$profile" > "$PROFILE_FILE"
 echo "✅ mac-provisioning $LATEST_VERSION installed"
