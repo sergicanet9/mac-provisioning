@@ -242,13 +242,14 @@ if ! curl -sL "$SFL_URL" -o "$TEMP_FILE"; then
     exit 1
 fi
 
-# 3. Copia el archivo descargado (que ahora SÍ es un archivo local)
-echo "--> Copiando el archivo .sfl4 descargado a $DEST_DIR"
-cp "$TEMP_FILE" "$DEST_FILE"
+# 3. Copia el archivo descargado usando sudo para forzar la escritura
+echo "--> Copiando el archivo .sfl4 descargado a $DEST_DIR (Usando sudo...)"
+sudo cp "$TEMP_FILE" "$DEST_FILE"
 
 # 4. Asegura los permisos correctos (propiedad del usuario)
-echo "--> Asegurando permisos..."
-chown $USER:staff "$DEST_FILE"
+# El chown es CRUCIAL después de usar sudo para que Finder pueda leerlo.
+echo "--> Asegurando permisos (propiedad de $USER) después de sudo..."
+sudo chown $USER:staff "$DEST_FILE"
 
 # 5. Limpia el archivo temporal
 rm -f "$TEMP_FILE"
