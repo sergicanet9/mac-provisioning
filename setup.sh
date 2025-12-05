@@ -176,6 +176,7 @@ fi
 # TODO separate profiles for work/personal
 # TODO do not use brewfiles for go packages?
 # TODO show bluetoth, volume, screen mirroring, bright extension in menu bar
+# TODO finder show all filename extensions
 # TODO open folders as columns in finder
 # TODO readme
 
