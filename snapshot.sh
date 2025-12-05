@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # ==================================================
 # mac-provisioning - snapshot.sh
-# Pulls local machine files into the cloned repo files for diffing.
-# It overrides the corresponding profile files based on the
-# installed profile so that changes can be inspected with git diff.
+# Takes a snapshot of the local machine configuration.
 # ==================================================
 
 # ===========================================
