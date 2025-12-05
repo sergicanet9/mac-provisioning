@@ -72,7 +72,6 @@ fi
 # ===========================================
 echo "3. Install or update Oh My Zsh"
 # ===========================================
-#TODO stops oninstall
 OMZ_DIR="$HOME/.oh-my-zsh"
 if [ ! -d "$OMZ_DIR" ]; then
     echo "Oh My Zsh not found. Installing..."
@@ -87,7 +86,7 @@ echo "4. Install or update Homebrew"
 # ===========================================
 if ! command -v brew &> /dev/null; then
     echo "Homebrew not found. Installing..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" #TODO PREPEND NONINTERACTIVE=1?
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
     echo "Homebrew already installed. Updating..."
     brew update
@@ -175,12 +174,16 @@ fi
 # TODO mac settings, sidebar, finder setups
 # TODO vscode login?
 # TODO backup only working for plists
-# TODO iterm background
+# TODO iterm background or switch to apple terminal
+# TODO separate profiles for work/personal
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
 echo "Show seconds in menu bar clock"
 defaults write com.apple.menuextra.clock ShowSeconds -bool true
+
+echo "Set Finder new window to Home folder"
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
 
 echo "Configure Dock"
 bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)"
