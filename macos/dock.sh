@@ -75,7 +75,6 @@ while true; do
             defaults write com.apple.dock persistent-apps -array
             defaults write com.apple.dock show-recents -bool false
             add_apps_to_dock "${personal_apps[@]}"
-            killall Dock
             break
             ;;
         2)
@@ -83,7 +82,6 @@ while true; do
             defaults write com.apple.dock persistent-apps -array
             defaults write com.apple.dock show-recents -bool false
             add_apps_to_dock "${work_apps[@]}"
-            killall Dock
             break
             ;;
         3)

@@ -16,7 +16,7 @@ backup_file() {
     local file="$1"
     if [ -f "$file" ]; then
         echo "Backup existing $(basename "$file")"
-        cp "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
+        cp "$file" "$BACKUP_DIR/Backup_$(basename "$file")_$TIMESTAMP"
     fi
 }
 
@@ -105,7 +105,7 @@ if [ ! -s "$BREWFILE_TMP" ]; then
 fi
 
 echo "Backing up Brewfile for packages and casks..."
-brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/.Brewfile_backup_$TIMESTAMP"
+brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/Backup_Brewfile_$TIMESTAMP"
 
 brew bundle install --file="$BREWFILE_TMP"
 
@@ -122,7 +122,7 @@ if [ ! -s "$BREWFILE_TMP_GO" ]; then
 fi
 
 echo "Backing up Brewfile for Go packages ..."
-brew bundle dump --describe --force --go --file="$BACKUP_DIR/.Brewfile_go_backup_$TIMESTAMP"
+brew bundle dump --describe --force --go --file="$BACKUP_DIR/Backup_Brewfile_go_$TIMESTAMP"
 
 brew bundle install --file="$BREWFILE_TMP_GO"
 
@@ -173,9 +173,9 @@ fi
 
 # TODO mac settings, sidebar, finder setups
 # TODO vscode login?
-# TODO backup only working for plists
 # TODO iterm background or switch to apple terminal
 # TODO separate profiles for work/personal
+# TODO disable stage manager
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
@@ -187,6 +187,9 @@ defaults write com.apple.finder NewWindowTarget -string "PfHm"
 
 echo "Configure Dock"
 bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)"
+
+killall Dock
+killall Finder
 
 echo "Install Safari extensions"
 bash -c "$(curl -fsSL $FILES_BASE/macos/extensions.sh)"
