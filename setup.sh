@@ -212,28 +212,31 @@ add_app "/Applications/Visual Studio Code.app"
 killall Dock
 
 
-echo "Configuring Finder sidebar favorites..."
+# echo "Configuring Finder sidebar favorites..."
 
-add_sidebar_favorite() {
-    local PATH_TO_ADD="$1"
+# add_sidebar_favorite() {
+#     local PATH_TO_ADD="$1"
 
-    local ESCAPED_PATH="${PATH_TO_ADD// /\\ }"
+#     local ESCAPED_PATH="${PATH_TO_ADD// /\\ }"
 
-    osascript <<EOF
-tell application "Finder"
-    try
-        make new sidebar item at sidebar list of Finder window 1 with properties {POSIX path:"$PATH_TO_ADD"}
-    end try
-end tell
-EOF
-}
+#     osascript <<EOF
+# tell application "Finder"
+#     try
+#         make new sidebar item at sidebar list of Finder window 1 with properties {POSIX path:"$PATH_TO_ADD"}
+#     end try
+# end tell
+# EOF
+# }
 
-# Añadir favoritos
-add_sidebar_favorite "$HOME/Documents"
-# add_sidebar_favorite "$HOME/Downloads"
-# add_sidebar_favorite "/Applications"
+# # Añadir favoritos
+# add_sidebar_favorite "$HOME/Documents"
+# # add_sidebar_favorite "$HOME/Downloads"
+# # add_sidebar_favorite "/Applications"
 
-echo "✅ Finder sidebar configured"
+# echo "✅ Finder sidebar configured"
+
+FAVORITES_FILE="$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
+install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$FAVORITES_FILE"
 
 
 # ===========================================
