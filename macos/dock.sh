@@ -67,7 +67,7 @@ while true; do
     echo "1) Personal"
     echo "2) Work"
     echo "3) Skip Dock setup"
-    read -rp "Enter your choice (1/2/3): " DOCK_CHOICE
+    read -rp "Enter your choice: " DOCK_CHOICE
 
     case "$DOCK_CHOICE" in
         1)

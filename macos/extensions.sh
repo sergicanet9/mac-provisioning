@@ -5,7 +5,7 @@
 
 declare -A extensions=(
     ["AdBlock"]="1402042596"
-    ["1Password"]="1569813296"
+    ["OnePassword"]="1569813296"
 )
 
 for name in "${!extensions[@]}"; do
