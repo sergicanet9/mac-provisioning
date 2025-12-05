@@ -176,6 +176,7 @@ defaults write com.apple.menuextra.clock ShowSeconds -bool true
 # killall Finder
 
 defaults write com.apple.dock persistent-apps -array
+defaults write com.apple.dock persistent-others -array
 defaults write com.apple.dock show-recents -bool false
 
 add_app() {
@@ -226,7 +227,7 @@ add_folder() {
 
 echo "Configuring Dock..."
 add_app "/System/Applications/Launchpad.app"
-add_app "/Applications/Safari.app"
+add_app "/System/Applications/Safari.app"
 add_app "/System/Applications/Mail.app"
 add_app "/System/Applications/Calendar.app"
 add_app "/System/Applications/Notes.app"
