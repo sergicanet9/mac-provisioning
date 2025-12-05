@@ -16,7 +16,7 @@ backup_file() {
     local file="$1"
     if [ -f "$file" ]; then
         echo "Backup existing $(basename "$file")"
-        mv "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
+        cp "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
     fi
 }
 
@@ -211,7 +211,7 @@ add_app "/Applications/Visual Studio Code.app"
 
 killall Dock
 
-install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl3" "$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl3"
+install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
 curl -fsSL "$FAVORITES_URL" -o "$FAVORITES_FILE"
 killall Finder
 
