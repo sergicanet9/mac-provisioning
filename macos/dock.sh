@@ -37,7 +37,7 @@ add_apps_to_dock() {
 # App lists
 # ===========================================
 personal_apps=(
-    "/System/Applications/Launchpad.app"
+    "/System/Applications/apps.app"
     "/Applications/Safari.app"
     "/System/Applications/Mail.app"
     "/System/Applications/Calendar.app"

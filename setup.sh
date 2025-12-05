@@ -72,6 +72,7 @@ fi
 # ===========================================
 echo "3. Install or update Oh My Zsh"
 # ===========================================
+#TODO stops oninstall
 OMZ_DIR="$HOME/.oh-my-zsh"
 if [ ! -d "$OMZ_DIR" ]; then
     echo "Oh My Zsh not found. Installing..."
@@ -129,11 +130,21 @@ brew bundle install --file="$BREWFILE_TMP_GO"
 # ===========================================
 echo "7. Configure git and clone repos"
 # ===========================================
-read -rp "Enter your Git user name: " GIT_USER_NAME
-git config --global user.name "$GIT_USER_NAME"
+if ! git config --global --get user.name >/dev/null; then
+    read -rp "Enter your Git user name: " GIT_USER_NAME
+    git config --global user.name "$GIT_USER_NAME"
+else
+    GIT_USER_NAME=$(git config --global user.name)
+    echo "Git user name already set: $GIT_USER_NAME"
+fi
 
-read -rp "Enter your Git user email: " GIT_USER_EMAIL
-git config --global user.email "$GIT_USER_EMAIL"
+if ! git config --global --get user.email >/dev/null; then
+    read -rp "Enter your Git user email: " GIT_USER_EMAIL
+    git config --global user.email "$GIT_USER_EMAIL"
+else
+    GIT_USER_EMAIL=$(git config --global user.email)
+    echo "Git user email already set: $GIT_USER_EMAIL"
+fi
 
 git config --global ghq.root "$HOME/Git"
 
