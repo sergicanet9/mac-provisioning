@@ -212,58 +212,44 @@ add_app "/Applications/Visual Studio Code.app"
 killall Dock
 
 
-# echo "Configuring Finder sidebar favorites..."
+echo "🚀 Configurando Favoritos de la Barra Lateral copiando archivo .sfl4..."
 
-# add_sidebar_favorite() {
-#     local PATH_TO_ADD="$1"
+# --- Rutas de Definición ---
 
-#     local ESCAPED_PATH="${PATH_TO_ADD// /\\ }"
+# 1. Ruta de tu archivo preconfigurado en tu repositorio
+SOURCE_FILE="$FILES_BASE/macos/com.apple.LSSharedFileList.FavoriteItems.sfl4"
 
-#     osascript <<EOF
-# tell application "Finder"
-#     try
-#         make new sidebar item at sidebar list of Finder window 1 with properties {POSIX path:"$PATH_TO_ADD"}
-#     end try
-# end tell
-# EOF
-# }
+# 2. Carpeta de destino del sistema del usuario
+DEST_DIR="$HOME/Library/Application Support/com.apple.sharedfilelist"
 
-# # Añadir favoritos
-# add_sidebar_favorite "$HOME/Documents"
-# # add_sidebar_favorite "$HOME/Downloads"
-# # add_sidebar_favorite "/Applications"
+# 3. Ruta completa del archivo de destino
+DEST_FILE="$DEST_DIR/com.apple.LSSharedFileList.FavoriteItems.sfl4"
 
-# echo "✅ Finder sidebar configured"
+# --- Comandos de Copia ---
 
-# FAVORITES_FILE="$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
-# install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$FAVORITES_FILE"
+# 1. Verificar si el archivo fuente existe en tu repositorio
+if [ ! -f "$SOURCE_FILE" ]; then
+    echo "!!! ERROR: Archivo fuente .sfl4 no encontrado en: $SOURCE_FILE"
+    echo "!!! Deteniendo la configuración de la barra lateral."
+    exit 1
+fi
 
+# 3. Copia el archivo
+echo "--> Copiando el archivo .sfl4 preconfigurado..."
+cp "$SOURCE_FILE" "$DEST_FILE"
 
-# Define las rutas completas de los elementos que quieres añadir
-TARGET_FOLDERS=(
-    # "$HOME/Documents"
-    # "$HOME/Development"
-    # "/Applications"
-    "$HOME/Documents"
-)
+# 4. Asegura los permisos correctos (propiedad del usuario)
+echo "--> Asegurando permisos..."
+chown $USER:staff "$DEST_FILE"
 
-# Itera sobre la lista y añade cada elemento
-for FOLDER_PATH in "${TARGET_FOLDERS[@]}"; do
-    # Verifica que la carpeta realmente exista antes de intentar añadirla
-    if [ -d "$FOLDER_PATH" ] || [ -f "$FOLDER_PATH" ]; then
-        echo "--> Añadiendo: $FOLDER_PATH"
-        # sfltool es el comando moderno para manipular los archivos .sfl*
-        /usr/bin/sfltool add-item "$FOLDER_PATH"
-    else
-        echo "!!! Advertencia: La ruta $FOLDER_PATH no existe. Saltando."
-    fi
-done
+# 5. Reinicia el Finder para que cargue la nueva configuración
+echo "--> Reiniciando Finder para aplicar los cambios..."
+killall Finder
 
 echo "✅ Configuración de la Barra Lateral Completa."
 
-# NOTA: Aunque sfltool es robusto, si los cambios no se reflejan inmediatamente,
-# el usuario puede ejecutar killall Finder (opcional en el script de provisioning)
-# killall Finder
+
+
 
 # ===========================================
 echo "9. Set installed version"
