@@ -15,7 +15,7 @@ declare profile
 # ===========================================
 echo "1. Check installed profile"
 # ===========================================
-profile_file="$HOME/.mac_provisioning/profile"
+profile_file="$HOME/.mac-provisioning/profile"
 if [[ ! -f "$profile_file" ]]; then
     echo "No profile found at $profile_file. Make sure that mac-provisioning is installed."
     exit 1
