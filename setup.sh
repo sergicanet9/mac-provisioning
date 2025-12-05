@@ -174,7 +174,10 @@ defaults write com.apple.menuextra.clock ShowSeconds -bool true
 # install_file "macos/com.apple.finder.plist" "$HOME/Library/Preferences/com.apple.finder.plist"
 # killall Dock
 # killall Finder
-# defaults write com.apple.dock persistent-apps -array
+
+defaults write com.apple.dock persistent-apps -array
+defaults write com.apple.dock show-recents -bool false
+
 add_app() {
     local APP_PATH="$1"
 
@@ -195,15 +198,48 @@ add_app() {
     </dict>"
 }
 
+add_folder() {
+    local FOLDER_PATH="$1"
+
+    defaults write com.apple.dock persistent-others -array-add \
+    "<dict>
+        <key>tile-data</key>
+        <dict>
+            <key>file-data</key>
+            <dict>
+                <key>_CFURLString</key>
+                <string>$FOLDER_PATH</string>
+                <key>_CFURLStringType</key>
+                <integer>0</integer>
+            </dict>
+            <key>showas</key>
+            <integer>1</integer> <!-- display as folder -->
+            <key>displayas</key>
+            <integer>0</integer> <!-- view as grid -->
+            <key>arrangement</key>
+            <integer>5</integer> <!-- sort by added date -->
+        </dict>
+        <key>tile-type</key>
+        <string>directory-tile</string>
+    </dict>"
+}
+
 echo "Configuring Dock..."
-
-add_app "/Applications/Google Chrome.app"
-# add_app "/Applications/iTerm.app"
-# add_app "/Applications/Visual Studio Code.app"
+add_app "/System/Applications/Launchpad.app"
+add_app "/Applications/Safari.app"
 add_app "/System/Applications/Mail.app"
+add_app "/System/Applications/Calendar.app"
+add_app "/System/Applications/Notes.app"
+add_app "/System/Applications/App Store.app"
+add_app "/System/Applications/System Settings.app"
+add_app "/Applications/iTerm.app"
+add_app "/Applications/Visual Studio Code.app"
 
+add_folder "$HOME/Downloads"
+
+
+# Restart Dock
 killall Dock
-echo "Dock configured"
 
 # ===========================================
 echo "9. Set installed version"
