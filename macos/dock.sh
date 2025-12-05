@@ -37,7 +37,7 @@ add_apps_to_dock() {
 # Apply dock
 # ===========================================
 if [ $# -eq 0 ]; then
-    echo "No dock apps provided. Skipping."
+    echo "No dock apps provided. Skipping..."
     exit 0
 fi
 

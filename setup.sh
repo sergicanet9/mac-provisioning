@@ -71,139 +71,139 @@ if [ "$new_install" = true ]; then
     done
 fi
 
-# ===========================================
-echo "2. Install or update Xcode Command Line Tools"
-# ===========================================
-if ! xcode-select -p &>/dev/null; then
-    echo "Xcode Command Line Tools not found. Installing..."
-    xcode-select --install
-else
-    echo "Xcode Command Line Tools found. Checking for updates..."
-    softwareupdate --list 2>/dev/null | grep "Command Line Tools" && \
-        echo "Update available. Installing..." && \
-        softwareupdate --install -a --verbose
-fi
+# # ===========================================
+# echo "2. Install or update Xcode Command Line Tools"
+# # ===========================================
+# if ! xcode-select -p &>/dev/null; then
+#     echo "Xcode Command Line Tools not found. Installing..."
+#     xcode-select --install
+# else
+#     echo "Xcode Command Line Tools found. Checking for updates..."
+#     softwareupdate --list 2>/dev/null | grep "Command Line Tools" && \
+#         echo "Update available. Installing..." && \
+#         softwareupdate --install -a --verbose
+# fi
 
-# ===========================================
-echo "3. Install or update Oh My Zsh"
-# ===========================================
-omz_dir="$HOME/.oh-my-zsh"
-if [ ! -d "$omz_dir" ]; then
-    echo "Oh My Zsh not found. Installing..."
-    RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-else
-    echo "Oh My Zsh already installed. Updating..."
-    bash -c "$omz_dir/tools/upgrade.sh"
-fi
+# # ===========================================
+# echo "3. Install or update Oh My Zsh"
+# # ===========================================
+# omz_dir="$HOME/.oh-my-zsh"
+# if [ ! -d "$omz_dir" ]; then
+#     echo "Oh My Zsh not found. Installing..."
+#     RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# else
+#     echo "Oh My Zsh already installed. Updating..."
+#     bash -c "$omz_dir/tools/upgrade.sh"
+# fi
 
-# ===========================================
-echo "4. Install or update Homebrew"
-# ===========================================
-if ! command -v brew &> /dev/null; then
-    echo "Homebrew not found. Installing..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-else
-    echo "Homebrew already installed. Updating..."
-    brew update
-fi
+# # ===========================================
+# echo "4. Install or update Homebrew"
+# # ===========================================
+# if ! command -v brew &> /dev/null; then
+#     echo "Homebrew not found. Installing..."
+#     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# else
+#     echo "Homebrew already installed. Updating..."
+#     brew update
+# fi
 
-# ===========================================
-echo "5. Apply Brewfile for packages and casks"
-# ===========================================
-brewfile_tmp="/tmp/Brewfile"
+# # ===========================================
+# echo "5. Apply Brewfile for packages and casks"
+# # ===========================================
+# brewfile_tmp="/tmp/Brewfile"
 
-curl -fsSL $FILES_BASE/homebrew/$profile/Brewfile -o "$brewfile_tmp"
-if [ ! -s "$brewfile_tmp" ]; then
-    echo "Failed to download Brewfile for packages and casks for profile $profile"
-    exit 1
-fi
+# curl -fsSL $FILES_BASE/homebrew/$profile/Brewfile -o "$brewfile_tmp"
+# if [ ! -s "$brewfile_tmp" ]; then
+#     echo "Failed to download Brewfile for packages and casks for profile $profile"
+#     exit 1
+# fi
 
-echo "Backing up Brewfile for packages and casks..."
-brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/Backup_Brewfile_$TIMESTAMP"
+# echo "Backing up Brewfile for packages and casks..."
+# brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/Backup_Brewfile_$TIMESTAMP"
 
-brew bundle install --file="$brewfile_tmp"
+# brew bundle install --file="$brewfile_tmp"
 
-# ===========================================
-echo "6. Apply Brewfile for Go packages"
-# ===========================================
-brewfile_tmp_go="/tmp/Brewfile_go"
+# # ===========================================
+# echo "6. Apply Brewfile for Go packages"
+# # ===========================================
+# brewfile_tmp_go="/tmp/Brewfile_go"
 
-curl -fsSL $FILES_BASE/go/Brewfile -o "$brewfile_tmp_go"
-if [ ! -s "$brewfile_tmp_go" ]; then
-    echo "Failed to download Brewfile for Go packages"
-    exit 1
-fi
+# curl -fsSL $FILES_BASE/go/Brewfile -o "$brewfile_tmp_go"
+# if [ ! -s "$brewfile_tmp_go" ]; then
+#     echo "Failed to download Brewfile for Go packages"
+#     exit 1
+# fi
 
-echo "Backing up Brewfile for Go packages ..."
-brew bundle dump --force --go --file="$BACKUP_DIR/Backup_Brewfile_go_$TIMESTAMP"
+# echo "Backing up Brewfile for Go packages ..."
+# brew bundle dump --force --go --file="$BACKUP_DIR/Backup_Brewfile_go_$TIMESTAMP"
 
-brew bundle install --file="$brewfile_tmp_go"
+# brew bundle install --file="$brewfile_tmp_go"
 
-# ===========================================
-echo "7. Configure git and clone repos"
-# ===========================================
-if ! git config --global --get user.name >/dev/null; then
-    read -rp "Enter your Git user name: " git_user_name
-    git config --global user.name "$git_user_name"
-else
-    git_user_name=$(git config --global user.name)
-    echo "Git user name already set: $git_user_name"
-fi
+# # ===========================================
+# echo "7. Configure git and clone repos"
+# # ===========================================
+# if ! git config --global --get user.name >/dev/null; then
+#     read -rp "Enter your Git user name: " git_user_name
+#     git config --global user.name "$git_user_name"
+# else
+#     git_user_name=$(git config --global user.name)
+#     echo "Git user name already set: $git_user_name"
+# fi
 
-if ! git config --global --get user.email >/dev/null; then
-    read -rp "Enter your Git user email: " git_user_email
-    git config --global user.email "$git_user_email"
-else
-    git_user_email=$(git config --global user.email)
-    echo "Git user email already set: $git_user_email"
-fi
+# if ! git config --global --get user.email >/dev/null; then
+#     read -rp "Enter your Git user email: " git_user_email
+#     git config --global user.email "$git_user_email"
+# else
+#     git_user_email=$(git config --global user.email)
+#     echo "Git user email already set: $git_user_email"
+# fi
 
-git config --global ghq.root "$HOME/Git"
+# git config --global ghq.root "$HOME/Git"
 
-if ! gh auth status >/dev/null 2>&1; then
-    echo "Authenticate GitHub in your browser using HTTPS. The script will continue once login is complete:"
-    gh auth login
-else
-    echo "GitHub already authenticated — skipping login."
-fi
+# if ! gh auth status >/dev/null 2>&1; then
+#     echo "Authenticate GitHub in your browser using HTTPS. The script will continue once login is complete:"
+#     gh auth login
+# else
+#     echo "GitHub already authenticated — skipping login."
+# fi
 
-github_user=$(gh api user --jq .login)
-echo "Authenticated as: $github_user"
-echo "Fetching all GitHub repos..."
-for repo in $(gh repo list "$github_user" --limit 200 --json name,url -q '.[].url'); do
-    ghq get "$repo" || echo "Already cloned or failed: $repo"
-done
+# github_user=$(gh api user --jq .login)
+# echo "Authenticated as: $github_user"
+# echo "Fetching all GitHub repos..."
+# for repo in $(gh repo list "$github_user" --limit 200 --json name,url -q '.[].url'); do
+#     ghq get "$repo" || echo "Already cloned or failed: $repo"
+# done
 
-# ===========================================
-echo "8. Install dotfiles"
-# ===========================================
-backup_file() {
-    local file="$1"
-    if [ -f "$file" ]; then
-        echo "Backup existing $(basename "$file")"
-        cp "$file" "$BACKUP_DIR/Backup_$(basename "$file")_$TIMESTAMP"
-    fi
-}
+# # ===========================================
+# echo "8. Install dotfiles"
+# # ===========================================
+# backup_file() {
+#     local file="$1"
+#     if [ -f "$file" ]; then
+#         echo "Backup existing $(basename "$file")"
+#         cp "$file" "$BACKUP_DIR/Backup_$(basename "$file")_$TIMESTAMP"
+#     fi
+# }
 
-install_file() {
-    local filename="$1"
-    local target="$2"
+# install_file() {
+#     local filename="$1"
+#     local target="$2"
 
-    backup_file "$target"
+#     backup_file "$target"
 
-    echo "Installing $filename"
-    curl -fsSL "$FILES_BASE/$filename" -o "$target"
-    if [ ! -s "$target" ]; then
-        echo "Failed to install $filename in $target"
-        exit 1
-    fi
-}
+#     echo "Installing $filename"
+#     curl -fsSL "$FILES_BASE/$filename" -o "$target"
+#     if [ ! -s "$target" ]; then
+#         echo "Failed to install $filename in $target"
+#         exit 1
+#     fi
+# }
 
-install_file "dotfiles/$profile/.zshrc" "$HOME/.zshrc"
+# install_file "dotfiles/$profile/.zshrc" "$HOME/.zshrc"
 
-# # TODO diff feature
-# # TODO disable hot corners
-# # TODO readme
+# # # TODO diff feature
+# # # TODO disable hot corners
+# # # TODO readme
 
 # ===========================================
 echo "9. Set up macOS"
@@ -223,8 +223,12 @@ defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool fa
 echo "Configure Dock"
 app_list_url="$FILES_BASE/macos/$profile/dock.txt"
 apps=()
-curl -fsSL "$app_list_url" | while IFS= read -r line; do
+while IFS= read -r line || [[ -n "$line" ]]; do
     apps+=("$line")
+done < <(curl -fsSL "$app_list_url")
+echo "Dock apps list for profile $profile:"
+for app in "${apps[@]}"; do
+    echo " - $app"
 done
 bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)" _ "${apps[@]}"
 
@@ -235,10 +239,14 @@ killall WindowManager
 echo "Install Safari extensions"
 ext_list_url="$FILES_BASE/macos/$profile/safari_extensions.txt"
 extensions=()
-curl -fsSL "$extension_list_url" | while IFS= read -r line; do
+while IFS= read -r line || [[ -n "$line" ]]; do
     extensions+=("$line")
+done < <(curl -fsSL "$ext_list_url")
+echo "Extensions list for profile $profile:"
+for ext in "${extensions[@]}"; do
+    echo " - $ext"
 done
-bash -c "$(curl -fsSL $FILES_BASE/macos/extensions.sh)" _ "${extensions[@]}"
+bash -c "$(curl -fsSL $FILES_BASE/macos/safari_extensions.sh)" _ "${extensions[@]}"
 
 # ===========================================
 echo "10. Set installed version"

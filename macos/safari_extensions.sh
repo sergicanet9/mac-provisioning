@@ -4,8 +4,8 @@
 # ==================================================
 
 if [ "$#" -eq 0 ]; then
-    echo "No extensions provided. Exiting."
-    exit 1
+    echo "No extensions provided. Skipping..."
+    exit 0
 fi
 
 for ext in "$@"; do
