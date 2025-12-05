@@ -227,7 +227,14 @@ defaults write com.apple.dock wvous-br-corner -int 0
 
 echo "Configure Dock"
 app_list_url="$FILES_BASE/macos/$profile/dock.txt"
-mapfile -t apps < <(curl -fsSL "$app_list_url")
+apps=()
+while IFS= read -r line || [[ -n "$line" ]]; do
+    apps+=("$line")
+done < <(curl -fsSL "$app_list_url")
+echo "Dock apps list for profile $profile:"
+for app in "${apps[@]}"; do
+    echo " - $app"
+done
 bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)" _ "${apps[@]}"
 
 killall Dock
@@ -236,8 +243,15 @@ killall WindowManager
 
 echo "Install Safari extensions"
 ext_list_url="$FILES_BASE/macos/$profile/safari_extensions.txt"
-mapfile -t extensions < <(curl -fsSL "$ext_list_url")
-bash -c "$(curl -fsSL $FILES_BASE/macos/extensions.sh)" _ "${extensions[@]}"
+extensions=()
+while IFS= read -r line || [[ -n "$line" ]]; do
+    extensions+=("$line")
+done < <(curl -fsSL "$ext_list_url")
+echo "Extensions list for profile $profile:"
+for ext in "${extensions[@]}"; do
+    echo " - $ext"
+done
+bash -c "$(curl -fsSL $FILES_BASE/macos/safari_extensions.sh)" _ "${extensions[@]}"
 
 # ===========================================
 echo "10. Set installed version"
