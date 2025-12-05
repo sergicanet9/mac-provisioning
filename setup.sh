@@ -76,7 +76,7 @@ echo "3. Install or update Oh My Zsh"
 OMZ_DIR="$HOME/.oh-my-zsh"
 if [ ! -d "$OMZ_DIR" ]; then
     echo "Oh My Zsh not found. Installing..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     echo "Oh My Zsh already installed. Updating..."
     bash -c "$OMZ_DIR/tools/upgrade.sh"
