@@ -62,24 +62,36 @@ work_apps=(
 # ===========================================
 # Menu
 # ===========================================
-echo "Choose Dock configuration:"
-echo "1) Personal"
-echo "2) Work"
-echo "3) Skip"
-read -rp "Enter choice [1-3]: " choice
+while true; do
+    echo "Select Dock configuration:"
+    echo "1) Personal"
+    echo "2) Work"
+    echo "3) Skip Dock setup"
+    read -rp "Enter your choice (1/2/3): " DOCK_CHOICE
 
-defaults write com.apple.dock persistent-apps -array
-defaults write com.apple.dock show-recents -bool false
-
-case "$choice" in
-    1) add_apps_to_dock "${personal_apps[@]}" ;;
-    2) add_apps_to_dock "${work_apps[@]}" ;;
-    3) echo "Skipping Dock configuration." ;;
-    *) echo "Invalid choice. Skipping Dock configuration." ;;
-esac
-
-# ===========================================
-# Restart Dock to apply changes
-# ===========================================
-killall Dock
-echo "Dock configuration applied."
+    case "$DOCK_CHOICE" in
+        1)
+            echo "Setting up Personal Dock..."
+            defaults write com.apple.dock persistent-apps -array
+            defaults write com.apple.dock show-recents -bool false
+            add_apps_to_dock "${personal_apps[@]}"
+            killall Dock
+            break
+            ;;
+        2)
+            echo "Setting up Work Dock..."
+            defaults write com.apple.dock persistent-apps -array
+            defaults write com.apple.dock show-recents -bool false
+            add_apps_to_dock "${work_apps[@]}"
+            killall Dock
+            break
+            ;;
+        3)
+            echo "Skipping Dock setup..."
+            break
+            ;;
+        *)
+            echo "Invalid choice. Select 1, 2, or 3."
+            ;;
+    esac
+done
