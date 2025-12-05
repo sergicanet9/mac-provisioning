@@ -177,6 +177,7 @@ fi
 # TODO do not use brewfiles for go packages?
 # TODO show bluetoth, volume, screen mirroring, bright extension in menu bar
 # TODO open folders as columns in finder
+# TODO readme
 
 # ===========================================
 echo "8. Set up macOS"
