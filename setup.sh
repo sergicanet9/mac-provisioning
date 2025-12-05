@@ -176,6 +176,7 @@ fi
 # TODO iterm background or switch to apple terminal
 # TODO separate profiles for work/personal
 # TODO disable stage manager
+# TODO do not use brewfiles for go packages?
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
