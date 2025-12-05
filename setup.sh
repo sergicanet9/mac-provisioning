@@ -213,41 +213,49 @@ killall Dock
 
 
 echo "🚀 Configurando Favoritos de la Barra Lateral copiando archivo .sfl4..."
+# --- VARIABLES DE CONFIGURACIÓN ---
+SFL_FILENAME="com.apple.LSSharedFileList.FavoriteItems.sfl4"
+SFL_URL="$FILES_BASE/macos/$SFL_FILENAME" # Usando la subcarpeta 'macos'
 
-# --- Rutas de Definición ---
-
-# 1. Ruta de tu archivo preconfigurado en tu repositorio
-SOURCE_FILE="$FILES_BASE/macos/com.apple.LSSharedFileList.FavoriteItems.sfl4"
-
-# 2. Carpeta de destino del sistema del usuario
+# Rutas de trabajo
+TEMP_FILE="/tmp/$SFL_FILENAME"
 DEST_DIR="$HOME/Library/Application Support/com.apple.sharedfilelist"
+DEST_FILE="$DEST_DIR/$SFL_FILENAME"
 
-# 3. Ruta completa del archivo de destino
-DEST_FILE="$DEST_DIR/com.apple.LSSharedFileList.FavoriteItems.sfl4"
 
-# --- Comandos de Copia ---
+# --- COMANDOS CORREGIDOS ---
 
-# 1. Verificar si el archivo fuente existe en tu repositorio
-if [ ! -f "$SOURCE_FILE" ]; then
-    echo "!!! ERROR: Archivo fuente .sfl4 no encontrado en: $SOURCE_FILE"
+# 1. Asegúrate de que la carpeta de destino exista
+echo "--> Creando carpeta de destino si no existe: $DEST_DIR"
+mkdir -p "$DEST_DIR"
+
+# 2. Descargar el archivo de configuración con CURL
+# -s: Modo silencioso
+# -L: Sigue redirecciones (útil con URLs de GitHub)
+# -o: Guarda la salida en un archivo
+echo "--> Descargando $SFL_FILENAME desde $SFL_URL"
+if ! curl -sL "$SFL_URL" -o "$TEMP_FILE"; then
+    echo "!!! ERROR: Falló la descarga del archivo .sfl4."
     echo "!!! Deteniendo la configuración de la barra lateral."
+    # Aseguramos que si algo falla, no dejamos residuos en /tmp
+    rm -f "$TEMP_FILE"
     exit 1
 fi
 
-# 3. Copia el archivo
-echo "--> Copiando el archivo .sfl4 preconfigurado..."
-cp "$SOURCE_FILE" "$DEST_FILE"
+# 3. Copia el archivo descargado (que ahora SÍ es un archivo local)
+echo "--> Copiando el archivo .sfl4 descargado a $DEST_DIR"
+cp "$TEMP_FILE" "$DEST_FILE"
 
 # 4. Asegura los permisos correctos (propiedad del usuario)
 echo "--> Asegurando permisos..."
 chown $USER:staff "$DEST_FILE"
 
-# 5. Reinicia el Finder para que cargue la nueva configuración
+# 5. Limpia el archivo temporal
+rm -f "$TEMP_FILE"
+
+# 6. Reinicia el Finder para que cargue la nueva configuración
 echo "--> Reiniciando Finder para aplicar los cambios..."
 killall Finder
-
-echo "✅ Configuración de la Barra Lateral Completa."
-
 
 
 
