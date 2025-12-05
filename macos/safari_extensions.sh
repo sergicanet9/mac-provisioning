@@ -3,12 +3,12 @@
 # extensions.sh - Asks to install Safari extensions
 # ==================================================
 
-extensions=(
-    "AdBlock|1402042596"
-    "1Password|1569813296"
-)
+if [ "$#" -eq 0 ]; then
+    echo "No extensions provided. Exiting."
+    exit 1
+fi
 
-for ext in "${extensions[@]}"; do
+for ext in "$@"; do
     name="${ext%%|*}"
     id="${ext##*|}"
     read -rp "Do you want to install $name (App Store ID: $id)? (y/n) " confirm

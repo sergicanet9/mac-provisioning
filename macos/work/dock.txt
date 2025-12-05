@@ -1,0 +1,8 @@
+/System/Applications/Launchpad.app
+/Applications/Microsoft Edge.app
+/Applications/Microsoft Outlook.app
+/Applications/Microsoft Teams.app
+/Applications/Notion.app
+/System/Applications/System Settings.app
+/System/Applications/Utilities/Terminal.app
+/Applications/Visual Studio Code.app

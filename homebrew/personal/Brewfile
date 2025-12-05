@@ -14,12 +14,14 @@ brew "ghq"
 brew "go"
 # Like cURL, but for gRPC
 brew "grpcurl"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
 # Kubernetes CLI To Manage Your Clusters In Style!
 brew "k9s"
 # MongoDB Shell to connect, configure, query, and work with your MongoDB database
 brew "mongosh"
 # Development kit for the Java programming language
-brew "openjdk@21"
+brew "openjdk"
 # Object-relational database system
 brew "postgresql@18"
 # Software environment for statistical computing
@@ -38,6 +40,8 @@ cask "betterzip"
 cask "docker-desktop"
 # Developer platform
 cask "dotnet-sdk"
+# Web browser
+cask "firefox"
 # Tool to measure the computer system's performance
 cask "geekbench"
 # Web browser
@@ -70,12 +74,3 @@ cask "vlc"
 cask "whatsapp"
 # Network protocol analyzer
 cask "wireshark-app"
-go "github.com/go-delve/delve/cmd/dlv"
-go "golang.org/x/tools/gopls"
-go "github.com/vektra/mockery/v2"
-go "google.golang.org/protobuf/cmd/protoc-gen-go"
-go "google.golang.org/grpc/cmd/protoc-gen-go-grpc"
-go "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"
-go "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2"
-go "honnef.co/go/tools/cmd/staticcheck"
-go "github.com/swaggo/swag/cmd/swag"

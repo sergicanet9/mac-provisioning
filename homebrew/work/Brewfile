@@ -1,0 +1,59 @@
+tap "rdp/openssh-gssapi"
+# Mozilla CA certificate store
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
+brew "ca-certificates"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
+# Microsoft Azure CLI 2.0
+brew "azure-cli"
+# New way of working with Protocol Buffers
+brew "buf"
+# GNU compiler collection
+brew "gcc"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# GitHub command-line tool
+brew "gh"
+# Remote repository management made easy
+brew "ghq"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# Like cURL, but for gRPC
+brew "grpcurl"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "k9s"
+# MongoDB Shell to connect, configure, query, and work with your MongoDB database
+brew "mongosh"
+# Development kit for the Java programming language
+brew "openjdk"
+# Object-relational database system
+brew "postgresql@18"
+# Software environment for statistical computing
+brew "r"
+# User interface to the TELNET protocol
+brew "telnet"
+# Developer platform
+cask "dotnet-sdk"
+# Web browser
+cask "firefox"
+# Web browser
+cask "google-chrome"
+# Terminal emulator as alternative to Apple's Terminal app
+cask "iterm2"
+# Keep your computer awake
+cask "jiggler"
+# Multi-platform web browser
+cask "microsoft-edge"
+# Tool to control external monitor brightness & volume
+cask "monitorcontrol"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Kubernetes and container management on the desktop
+cask "rancher"
+# Open-source code editor
+cask "visual-studio-code"
+# Native desktop client for WhatsApp
+cask "whatsapp"

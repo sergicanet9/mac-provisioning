@@ -3,26 +3,24 @@
 #
 # Created by mac-provisioning (https://github.com/sergicanet9/mac-provisioning)
 # ==============================================================================
-# ⚠️ DO NOT MODIFY THIS FILE MANUALLY.
+# ⚠️ AUTO-GENERATED FILE
+# Push the changes in this file to the repo to avoid losing them.
 # ==============================================================================
-
-# Path to custom file to add your customizations.
-source "$HOME/.zshcustom"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Go
-export PATH=$PATH:$(go env GOPATH)/bin
-
-# Java
-export PATH="$PATH:/opt/homebrew/opt/openjdk/bin"
 
 # Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# Go
+export PATH=$PATH:$(go env GOPATH)/bin
+
+# Java
+export PATH="$PATH:/opt/homebrew/opt/openjdk/bin"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,

@@ -34,55 +34,14 @@ add_apps_to_dock() {
 }
 
 # ===========================================
-# App lists
-# ===========================================
-personal_apps=(
-    "/System/Applications/apps.app"
-    "/Applications/Safari.app"
-    "/System/Applications/Mail.app"
-    "/System/Applications/Calendar.app"
-    "/System/Applications/Notes.app"
-    "/System/Applications/App Store.app"
-    "/System/Applications/System Settings.app"
-    "/System/Applications/Utilities/Terminal.app"
-    "/Applications/Visual Studio Code.app"
-)
-
-work_apps=(
-    "/System/Applications/Launchpad.app"
-    "/Applications/Microsoft Edge.app"
-    "/Applications/Microsoft Outlook.app"
-    "/Applications/Microsoft Teams.app"
-    "/Applications/Notion.app"
-    "/System/Applications/System Settings.app"
-    "/System/Applications/Utilities/Terminal.app"
-    "/Applications/Visual Studio Code.app"
-)
-
-# ===========================================
 # Apply dock
 # ===========================================
-PROFILE="$1"
-if [[ -z "$PROFILE" ]]; then
-    echo "No profile provided. Exiting."
-    exit 1
+if [ $# -eq 0 ]; then
+    echo "No dock apps provided. Skipping."
+    exit 0
 fi
 
-case "$PROFILE" in
-    personal)
-        echo "Setting up personal dock..."
-        defaults write com.apple.dock persistent-apps -array
-        defaults write com.apple.dock show-recents -bool false
-        add_apps_to_dock "${personal_apps[@]}"
-        ;;
-    work)
-        echo "Setting up work dock..."
-        defaults write com.apple.dock persistent-apps -array
-        defaults write com.apple.dock show-recents -bool false
-        add_apps_to_dock "${work_apps[@]}"
-        ;;
-    *)
-        echo "Unknown profile: $PROFILE. Skipping Dock setup."
-        exit 1
-        ;;
-esac
+defaults write com.apple.dock persistent-apps -array
+defaults write com.apple.dock show-recents -bool false
+
+add_apps_to_dock "$@"
