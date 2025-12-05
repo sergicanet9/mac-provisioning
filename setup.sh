@@ -177,6 +177,7 @@ fi
 # TODO separate profiles for work/personal
 # TODO disable stage manager
 # TODO do not use brewfiles for go packages?
+# show bluetoth, volume, screen mirroring, bright extension in menu b
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
