@@ -50,7 +50,7 @@ else
     INSTALLED_VERSION=$(cat "$VERSION_FILE")
 
     if [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
-        echo "✅ mac-provisioning is already up to date. Current version: $INSTALLED_VERSION. Reinstalling..."
+        echo "mac-provisioning is already up to date. Current version: $INSTALLED_VERSION. Reinstalling..."
     else
         echo "mac-provisioning $INSTALLED_VERSION already installed. Updating to $LATEST_VERSION..."
     fi
