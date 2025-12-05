@@ -175,21 +175,9 @@ defaults write com.apple.menuextra.clock ShowSeconds -bool true
 echo "Configure Dock"
 bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)"
 
-echo "Install Mac App Store Safari extensions"
-extensions=(
-    "1402042596"  # AdBlock
-    "1569813296"  # 1Password
-)
+echo "Install Safari extensions"
+bash -c "$(curl -fsSL $FILES_BASE/macos/extensions.sh)"
 
-for ext_id in "${extensions[@]}"; do
-    read -rp "Do you want to install extension with App Store ID $ext_id? (y/n) " confirm
-    if [[ "$confirm" =~ ^[Yy]$ ]]; then
-        open "macappstore://itunes.apple.com/app/id$ext_id"
-        echo "Please complete the installation manually in App Store."
-    else
-        echo "Skipping extension $ext_id."
-    fi
-done
 
 # ===========================================
 echo "9. Set installed version"
