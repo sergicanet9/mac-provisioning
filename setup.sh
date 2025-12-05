@@ -27,7 +27,7 @@ install_file() {
     backup_file "$target"
 
     echo "Installing $filename"
-    sudo curl -fsSL "$FILES_BASE/$filename" -o "$target"
+    curl -fsSL "$FILES_BASE/$filename" -o "$target"
 }
 
 # ===========================================
@@ -235,9 +235,35 @@ killall Dock
 
 # echo "✅ Finder sidebar configured"
 
-FAVORITES_FILE="$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
-install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$FAVORITES_FILE"
+# FAVORITES_FILE="$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
+# install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$FAVORITES_FILE"
 
+
+# Define las rutas completas de los elementos que quieres añadir
+TARGET_FOLDERS=(
+    # "$HOME/Documents"
+    # "$HOME/Development"
+    # "/Applications"
+    "$HOME/Documents"
+)
+
+# Itera sobre la lista y añade cada elemento
+for FOLDER_PATH in "${TARGET_FOLDERS[@]}"; do
+    # Verifica que la carpeta realmente exista antes de intentar añadirla
+    if [ -d "$FOLDER_PATH" ] || [ -f "$FOLDER_PATH" ]; then
+        echo "--> Añadiendo: $FOLDER_PATH"
+        # sfltool es el comando moderno para manipular los archivos .sfl*
+        /usr/bin/sfltool add-item "$FOLDER_PATH"
+    else
+        echo "!!! Advertencia: La ruta $FOLDER_PATH no existe. Saltando."
+    fi
+done
+
+echo "✅ Configuración de la Barra Lateral Completa."
+
+# NOTA: Aunque sfltool es robusto, si los cambios no se reflejan inmediatamente,
+# el usuario puede ejecutar killall Finder (opcional en el script de provisioning)
+# killall Finder
 
 # ===========================================
 echo "9. Set installed version"
