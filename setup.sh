@@ -171,12 +171,13 @@ if [ ! -f "$HOME/.zshcustom" ]; then
     install_file "dotfiles/.zshcustom" "$HOME/.zshcustom"
 fi
 
-# TODO mac settings, sidebar, finder setups
 # TODO vscode login?
 # TODO iterm background or switch to apple terminal
 # TODO separate profiles for work/personal
 # TODO do not use brewfiles for go packages?
-# show bluetoth, volume, screen mirroring, bright extension in menu b
+# TODO show bluetoth, volume, screen mirroring, bright extension in menu bar
+# TODO open folders as columns in finder
+
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
