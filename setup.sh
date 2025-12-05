@@ -175,7 +175,6 @@ fi
 # TODO vscode login?
 # TODO iterm background or switch to apple terminal
 # TODO separate profiles for work/personal
-# TODO disable stage manager
 # TODO do not use brewfiles for go packages?
 # show bluetoth, volume, screen mirroring, bright extension in menu b
 # ===========================================
@@ -187,11 +186,15 @@ defaults write com.apple.menuextra.clock ShowSeconds -bool true
 echo "Set Finder new window to Home folder"
 defaults write com.apple.finder NewWindowTarget -string "PfHm"
 
+echo "Set Click wallpaper to reveal desktop off"
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
 echo "Configure Dock"
 bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)"
 
 killall Dock
 killall Finder
+killall WindowManager
 
 echo "Install Safari extensions"
 bash -c "$(curl -fsSL $FILES_BASE/macos/extensions.sh)"
