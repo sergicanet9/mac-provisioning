@@ -254,7 +254,7 @@ done
 bash -c "$(curl -fsSL $FILES_BASE/macos/safari_extensions.sh)" _ "${extensions[@]}"
 
 # ===========================================
-echo "10. Set installed version"
+echo "10. Set installed version and profile"
 # ===========================================
 echo "$LATEST_VERSION" > "$VERSION_FILE"
 echo "$profile" > "$PROFILE_FILE"

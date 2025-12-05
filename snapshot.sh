@@ -57,5 +57,34 @@ else
 fi
 
 # ==================================================
+echo "4. Update macOS files"
+# ==================================================
+target_dock="$LOCAL_DIR/macos/$profile/dock.txt"
+echo "Updating $target_dock from local Dock configuration"
+
+dock_current=$(defaults read com.apple.dock persistent-apps \
+    | grep '_CFURLString"' \
+    | sed 's/.*= "//; s/";$//' \
+    | sed 's|^file://||; s|/$||' \
+    | while read -r line; do
+        printf '%b\n' "${line//%20/ }"
+      done
+)
+echo "$dock_current" > "$target_dock"
+
+extensions_plist="$HOME/Library/Safari/Extensions/Extensions.plist"
+target_safari_extensions="$LOCAL_DIR/macos/$profile/safari_extensions.txt"
+echo "Updating $target_safari_extensions from local Safari Extensions configuration"
+
+if [[ -f "$extensions_plist" ]]; then
+    plutil -convert xml1 -o - "$extensions_plist" 2>/dev/null \
+    | grep -A1 '<key>CFBundleDisplayName</key>\|<key>iTunesStoreID</key>' \
+    | sed -E 's/.*<string>(.*)<\/string>/\1/' \
+    | paste - -d'|' \
+    >> "$target_safari_extensions"
+fi
+
+
+# ==================================================
 echo "DONE: Local machine snapshot taken. Use git diff to review changes."
 # ==================================================
