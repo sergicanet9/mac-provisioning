@@ -222,7 +222,10 @@ defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool fa
 
 echo "Configure Dock"
 app_list_url="$FILES_BASE/macos/$profile/dock.txt"
-mapfile -t apps < <(curl -fsSL "$app_list_url")
+apps=()
+curl -fsSL "$app_list_url" | while IFS= read -r line; do
+    apps+=("$line")
+done
 bash -c "$(curl -fsSL $FILES_BASE/macos/dock.sh)" _ "${apps[@]}"
 
 killall Dock
@@ -231,7 +234,10 @@ killall WindowManager
 
 echo "Install Safari extensions"
 ext_list_url="$FILES_BASE/macos/$profile/safari_extensions.txt"
-mapfile -t extensions < <(curl -fsSL "$ext_list_url")
+extensions=()
+curl -fsSL "$extension_list_url" | while IFS= read -r line; do
+    extensions+=("$line")
+done
 bash -c "$(curl -fsSL $FILES_BASE/macos/extensions.sh)" _ "${extensions[@]}"
 
 # ===========================================
