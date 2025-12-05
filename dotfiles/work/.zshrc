@@ -1,10 +1,6 @@
 # ==============================================================================
-# .zshrc
-#
-# Created by mac-provisioning (https://github.com/sergicanet9/mac-provisioning)
-# ==============================================================================
-# ⚠️ AUTO-GENERATED FILE
-# Push the changes in this file to the repo to avoid losing them.
+# mac-provisioning - .zshrc
+# ⚠️ Changes not pushed to git will be overriden on the next provisioning run.
 # ==============================================================================
 
 # If you come from bash you might have to change your $PATH.

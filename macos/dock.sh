@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # ==================================================
-# dock.sh - Configure macOS Dock
+# mac-provisioning - dock.sh
+# Configures macOS Dock
 # ==================================================
 
 # ===========================================

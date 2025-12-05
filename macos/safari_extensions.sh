@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # ==================================================
-# extensions.sh - Asks to install Safari extensions
+# mac-provisioning - safari_extensions.sh
+# Asks to manually install Safari extensions
 # ==================================================
 
 if [ "$#" -eq 0 ]; then
