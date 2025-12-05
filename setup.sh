@@ -201,9 +201,8 @@ install_file() {
 
 install_file "dotfiles/$profile/.zshrc" "$HOME/.zshrc"
 
-# # TODO diff feature
-# # TODO disable hot corners
-# # TODO readme
+# TODO diff feature
+# TODO readme
 
 # ===========================================
 echo "9. Set up macOS"
@@ -219,6 +218,12 @@ defaults write com.apple.menuextra.clock ShowSeconds -bool true
 
 echo "Set Click wallpaper to reveal desktop off"
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
+echo "Disable hot corners"
+defaults write com.apple.dock wvous-tl-corner -int 0
+defaults write com.apple.dock wvous-tr-corner -int 0
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-br-corner -int 0
 
 echo "Configure Dock"
 app_list_url="$FILES_BASE/macos/$profile/dock.txt"
