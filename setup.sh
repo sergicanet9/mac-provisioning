@@ -201,9 +201,6 @@ install_file() {
 
 install_file "dotfiles/$profile/.zshrc" "$HOME/.zshrc"
 
-# TODO diff feature
-# TODO readme
-
 # ===========================================
 echo "9. Set up macOS"
 # ===========================================
