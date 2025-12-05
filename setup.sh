@@ -211,9 +211,24 @@ add_app "/Applications/Visual Studio Code.app"
 
 killall Dock
 
-FAVORITES_FILE="$HOME/Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
-install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$FAVORITES_FILE"
-killall Finder
+# FAVORITES_FILE="$HOME/Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
+# install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" "$FAVORITES_FILE"
+# killall Finder
+
+
+FAVORITES_TMP="/tmp/com.apple.LSSharedFileList.FavoriteItems.sfl4"
+curl -sL "$FILES_BASE/macos/com.apple.LSSharedFileList.FavoriteItems.sfl4" -o "$FAVORITES_TMP"
+
+if [ ! -s "$FAVORITES_TMP" ]; then
+    echo "Failed to download FavoriteItems.sfl4"
+    exit 1
+fi
+
+echo "Backing up Favorites file..."
+#TODO backup_file "$FAVORITES_FILE"
+
+cp "$FAVORITES_TMP" "$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl4"
+
 
 # ===========================================
 echo "9. Set installed version"
