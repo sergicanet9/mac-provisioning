@@ -16,7 +16,7 @@ backup_file() {
     local file="$1"
     if [ -f "$file" ]; then
         echo "Backup existing $(basename "$file")"
-        sudo cp "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
+        cp "$file" "$BACKUP_DIR/$(basename "$file").backup_$TIMESTAMP"
     fi
 }
 
@@ -27,7 +27,7 @@ install_file() {
     backup_file "$target"
 
     echo "Installing $filename"
-    curl -fsSL "$FILES_BASE/$filename" -o "$target"
+    sudo curl -fsSL "$FILES_BASE/$filename" -o "$target"
 }
 
 # ===========================================
