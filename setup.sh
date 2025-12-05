@@ -175,6 +175,7 @@ fi
 # TODO mac settings, sidebar, finder setups
 # TODO vscode login?
 # TODO backup only working for plists
+# TODO iterm background
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
