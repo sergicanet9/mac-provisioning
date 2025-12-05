@@ -200,7 +200,7 @@ add_app() {
 
 echo "Configuring Dock..."
 add_app "/System/Applications/Launchpad.app"
-add_app "/Applications/Safari.app"
+add_app "/System/Cryptexes/App/System/Applications/Safari.app"
 add_app "/System/Applications/Mail.app"
 add_app "/System/Applications/Calendar.app"
 add_app "/System/Applications/Notes.app"
