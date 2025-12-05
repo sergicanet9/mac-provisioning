@@ -176,18 +176,19 @@ fi
 # TODO separate profiles for work/personal
 # TODO do not use brewfiles for go packages?
 # TODO show bluetoth, volume, screen mirroring, bright extension in menu bar
-# TODO finder show all filename extensions
-# TODO open folders as columns in finder
 # TODO readme
 
 # ===========================================
 echo "8. Set up macOS"
 # ===========================================
-echo "Show seconds in menu bar clock"
-defaults write com.apple.menuextra.clock ShowSeconds -bool true
+echo "Show all filename extensions in Finder"
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
 echo "Set Finder new window to Home folder"
 defaults write com.apple.finder NewWindowTarget -string "PfHm"
+
+echo "Show seconds in menu bar clock"
+defaults write com.apple.menuextra.clock ShowSeconds -bool true
 
 echo "Set Click wallpaper to reveal desktop off"
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
