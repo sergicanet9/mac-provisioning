@@ -30,32 +30,32 @@ install_file() {
     curl -fsSL "$FILES_BASE/$filename" -o "$target"
 }
 
-# # ===========================================
-# echo "1. Check mac-provisioning installation"
-# # ===========================================
-# VERSION_FILE="$INSTALL_DIR/version"
-# VERSION_URL="$FILES_BASE/VERSION"
+# ===========================================
+echo "1. Check mac-provisioning installation"
+# ===========================================
+VERSION_FILE="$INSTALL_DIR/version"
+VERSION_URL="$FILES_BASE/VERSION"
 
-# LATEST_VERSION=$(curl -sL -H "Cache-Control: no-cache" "$VERSION_URL")
-# if [ -z "$LATEST_VERSION" ]; then
-#     echo "Could not fetch VERSION from $VERSION_URL"
-#     exit 1
-# fi
+LATEST_VERSION=$(curl -sL -H "Cache-Control: no-cache" "$VERSION_URL")
+if [ -z "$LATEST_VERSION" ]; then
+    echo "Could not fetch VERSION from $VERSION_URL"
+    exit 1
+fi
 
-# if [ ! -f "$VERSION_FILE" ]; then
-#     echo "mac-provisioning not found. Installing..."
-#     mkdir -p "$INSTALL_DIR"
-#     mkdir -p "$BACKUP_DIR"
-# else
-#     INSTALLED_VERSION=$(cat "$VERSION_FILE")
+if [ ! -f "$VERSION_FILE" ]; then
+    echo "mac-provisioning not found. Installing..."
+    mkdir -p "$INSTALL_DIR"
+    mkdir -p "$BACKUP_DIR"
+else
+    INSTALLED_VERSION=$(cat "$VERSION_FILE")
 
-#     if [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
-#         echo "✅ mac-provisioning is already up to date. Current version: $INSTALLED_VERSION"
-#         exit 0
-#     else
-#         echo "mac-provisioning $INSTALLED_VERSION already installed. Updating to $LATEST_VERSION..."
-#     fi
-# fi
+    if [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ]; then
+        echo "✅ mac-provisioning is already up to date. Current version: $INSTALLED_VERSION"
+        exit 0
+    else
+        echo "mac-provisioning $INSTALLED_VERSION already installed. Updating to $LATEST_VERSION..."
+    fi
+fi
 
 # # ===========================================
 # echo "2. Install or update Xcode Command Line Tools"
@@ -210,6 +210,10 @@ add_app "/Applications/iTerm.app"
 add_app "/Applications/Visual Studio Code.app"
 
 killall Dock
+
+install_file "macos/com.apple.LSSharedFileList.FavoriteItems.sfl3" "$HOME/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteItems.sfl3"
+curl -fsSL "$FAVORITES_URL" -o "$FAVORITES_FILE"
+killall Finder
 
 # ===========================================
 echo "9. Set installed version"
