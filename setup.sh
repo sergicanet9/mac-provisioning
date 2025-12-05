@@ -27,7 +27,7 @@ install_file() {
     backup_file "$target"
 
     echo "Installing $filename"
-    # sudo curl -fsSL "$FILES_BASE/$filename" -o "$target"
+    sudo curl -fsSL "$FILES_BASE/$filename" -o "$target"
 }
 
 # ===========================================
