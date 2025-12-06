@@ -78,7 +78,6 @@ if ! xcode-select -p &>/dev/null; then
     echo "Xcode Command Line Tools not found. Installing..."
     xcode-select --install
     echo "A dialog has appeared asking to install Xcode Command Line Tools."
-    echo "   Please accept it and wait for the installation to finish."
     read -rp "➡️  Press Enter ONLY when the installation has fully completed... "
 else
     echo "Xcode Command Line Tools found. Checking for updates..."
