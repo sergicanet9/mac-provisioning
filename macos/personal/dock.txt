@@ -1,5 +1,5 @@
-/System/Applications/apps.app
-/Applications/Safari.app
+/System/Applications/Apps.app
+/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app
 /System/Applications/Mail.app
 /System/Applications/Calendar.app
 /System/Applications/Notes.app
