@@ -1,18 +1,18 @@
 tap "rdp/openssh-gssapi"
 # Mozilla CA certificate store
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
 brew "ca-certificates"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Microsoft Azure CLI 2.0
 brew "azure-cli"
 # New way of working with Protocol Buffers
 brew "buf"
-# GNU compiler collection
-brew "gcc"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
+# GNU compiler collection
+brew "gcc"
 # GitHub command-line tool
 brew "gh"
 # Remote repository management made easy
