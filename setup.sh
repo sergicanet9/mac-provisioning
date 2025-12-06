@@ -121,7 +121,7 @@ fi
 echo "Backing up Brewfile for packages and casks..."
 brew bundle dump --describe --force --no-vscode --file="$BACKUP_DIR/Backup_Brewfile_$TIMESTAMP"
 
-brew bundle install --file="$brewfile_tmp"
+brew bundle install --cleanup --file="$brewfile_tmp"
 
 # ===========================================
 echo "6. Apply Brewfile for Go packages"

@@ -41,8 +41,6 @@ cask "dotnet-sdk"
 cask "firefox"
 # Web browser
 cask "google-chrome"
-# Terminal emulator as alternative to Apple's Terminal app
-cask "iterm2"
 # Keep your computer awake
 cask "jiggler"
 # Multi-platform web browser
