@@ -104,6 +104,7 @@ echo "4. Install or update Homebrew"
 if ! command -v brew &> /dev/null; then
     echo "Homebrew not found. Installing..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 else
     echo "Homebrew already installed. Updating..."
     brew update
