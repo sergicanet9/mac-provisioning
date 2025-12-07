@@ -54,8 +54,6 @@ cask "ledger-wallet"
 cask "malwarebytes"
 # Provides updates to various Microsoft products
 cask "microsoft-auto-update"
-# Multi-platform web browser
-cask "microsoft-edge"
 # Spreadsheet software
 cask "microsoft-excel"
 # Presentation software
