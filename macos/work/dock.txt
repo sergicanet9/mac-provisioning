@@ -1,4 +1,4 @@
-/System/Applications/Launchpad.app
+/System/Applications/Apps.app
 /Applications/Microsoft Edge.app
 /Applications/Microsoft Outlook.app
 /Applications/Microsoft Teams.app
