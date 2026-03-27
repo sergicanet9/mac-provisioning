@@ -1,3 +1,4 @@
+tap "azure/kubelogin"
 tap "rdp/openssh-gssapi"
 # Mozilla CA certificate store
 brew "ca-certificates"
@@ -35,6 +36,8 @@ brew "postgresql@18"
 brew "r"
 # User interface to the TELNET protocol
 brew "telnet"
+# A Kubernetes credential (exec) plugin implementing azure authentication
+brew "azure/kubelogin/kubelogin"
 # Developer platform
 cask "dotnet-sdk"
 # Web browser
