@@ -120,9 +120,8 @@ source $ZSH/oh-my-zsh.sh
 # Azure certificate
 export REQUESTS_CA_BUNDLE="/Library/Application Support/Netskope/STAgent/data/combined-ca-bundle.pem"
 
-alias kinit='/usr/bin/kinit sergic@SNOWMEN.SE'
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/Sergi.Canet/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
